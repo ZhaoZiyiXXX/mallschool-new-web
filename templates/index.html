@@ -1,0 +1,63 @@
+{!extends file='base.html'!} {!block name=base!}
+<script>
+$(document).ready(function(){
+	$("#title1").fadeIn({
+	     duration: 1000, 
+	     easing: 'easeInExpo', 
+	     complete:  function(){},
+	 });
+	$("#title2").fadeIn({
+	     duration: 2000, 
+	     easing: 'easeInExpo', 
+	     complete:  function(){},
+	 });
+	$("#title3").fadeIn({
+	     duration: 3000, 
+	     easing: 'easeInExpo', 
+	     complete: function(){},
+	 });
+	$("#click1").fadeIn({
+	     duration: 4000, 
+	     easing: 'easeInExpo', 
+	     complete: function(){ 
+	     },
+	 });
+	
+	$("#click2").fadeIn({
+	     duration: 4000, 
+	     easing: 'easeInExpo', 
+	     complete: function(){ 
+	     },
+	 });
+
+});
+</script>
+<style>
+#box{
+	padding-top:20px;
+}
+h1{
+	display:none;
+}
+#click1{
+	margin-top:50px;
+	display:none;
+}
+#click2{
+	display:none;
+	margin-top:50px;
+}
+
+</style>
+<div class="container-fluid">
+	<div class="row" style="text-align: center">
+		<div id="box" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+			<h1 id="title1" class="ffyh" >期末考试期间，打印还要排队等？</h1>
+			<h1 id="title2" class="ffyh" >打印店电脑病毒多，不想插U盘？</h1>
+			<h1 id="title3" class="ffyh" >打印机上文件太多找不到自己资料？</h1>
+			<a href="/upload"><img id="click1" alt="提交打印" src="/static/images/indexbutton.jpg" /></a>
+			<a href="/query"><img id="click2" alt="提交打印" src="/static/images/querybutton.jpg" /></a>
+		</div>
+	</div>
+</div>
+{!/block!}

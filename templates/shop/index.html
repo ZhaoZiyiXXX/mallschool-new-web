@@ -1,0 +1,135 @@
+{!extends file='base.html'!} {!block name=base!}
+ <script src="/static/js/baiduTemplate.js"></script> 
+<script>
+$(document).ready(function(){
+	$("#submit").click(function(){
+		$.ajax({
+			type:"GET",
+			url:"{!$api_url!}"+"/PrintFile",
+			dataType:"json",
+			data:{
+				type:"shop",
+				q:$("#q").val()
+				},
+			success:function(data){
+				if(data.result ==0){
+					var bt=baidu.template;
+					var html=bt('t:search_result',data);
+					$("#result").html(html);
+				}
+			},
+			error:function(data){
+			},
+		});
+	});
+});
+
+function changestatus(id){
+	$.ajax({
+		type:"POST",
+		url:"{!$api_url!}"+"/PrintFile",
+		dataType:"json",
+		data:{
+			id:id,
+			type:"update",
+			status:"已打印"
+			},
+		success:function(data){
+			$.ajax({
+				type:"GET",
+				url:"{!$api_url!}"+"/PrintFile",
+				dataType:"json",
+				data:{
+					type:"shop",
+					q:$("#q").val()
+					},
+				success:function(data){
+					if(data.result ==0){
+						var bt=baidu.template;
+						var html=bt('t:search_result',data);
+						$("#result").html(html);
+					}
+				},
+				error:function(data){
+				},
+			});
+		},
+		error:function(data){
+		},
+	});
+}
+</script>
+<style>
+#box{
+	padding-top:20px;
+}
+
+.btn{
+	min-width:100px;
+	max-width:200px;
+}
+
+th{
+	text-align:center;
+}
+
+td{
+	text-align:center;
+}
+
+</style>
+<div class="container-fluid">
+	<div class="row" style="text-align: center">
+		<div id="box" class="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-10 col-xs-12 tac">
+			<div class="row">
+				<div class="col-md-8 col-md-offset-2">
+				<div class="input-group">
+			      <input id="q" type="text" class="form-control" placeholder="输入店铺号查询">
+			      <span class="input-group-btn">
+			        <button class="btn btn-default" type="button" id="submit">搜索</button>
+			      </span>
+			    </div>
+			    </div>
+			</div>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>手机号</th>
+						<th>文件名</th>
+						<th>页数</th>
+						<th>尺寸</th>
+						<th>颜色</th>
+						<th>单面双面</th>
+						<th>领取时间</th>
+						<th>用户备注</th>
+						<th>状态</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody id="result">
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<script id='t:search_result' type="text/template">
+<!-- 模板部分 -->
+<% for(var i = 0; i<data.length;i++){%>
+					<tr>
+						<td><%=data[i].tel%></td>
+						<td><a href="<%=data[i].filepath%>"><%=data[i].filename%></a></td>
+						<td><%=data[i].pagecount%></td>
+						<td><%=data[i].pagesize%></td>
+						<td><%=data[i].pagecolor%></td>
+						<td><%=data[i].isduplex%></td>
+						<td><%=data[i].gettime%></td>
+						<td><%=data[i].mark%></td>
+						<td><%=data[i].status%></td>
+						<td><button  id="<%=data[i].id%>" name ="handleorder" class="btn btn-sm btn-default 
+								<%if(data[i].status != "待打印") { %>dpn<%}%>
+								" onclick="changestatus('<%=data[i].id%>');">接单</button></td>
+					</tr>
+<%}%>
+<!-- 模板结束 -->   
+</script>
+{!/block!}

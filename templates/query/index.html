@@ -1,0 +1,83 @@
+{!extends file='base.html'!} {!block name=base!}
+ <script src="/static/js/baiduTemplate.js"></script> 
+<script>
+$(document).ready(function(){
+	$("#submit").click(function(){
+		$.ajax({
+			type:"GET",
+			url:"{!$api_url!}"+"/PrintFile",
+			dataType:"json",
+			data:{tel:$("#q").val()},
+			success:function(data){
+				if(data.result ==0){
+					var bt=baidu.template;
+					var html=bt('t:search_result',data);
+					$("#result").html(html);
+				}
+			},
+			error:function(data){
+			},
+		});
+	});
+});
+</script>
+<style>
+#box{
+	padding-top:20px;
+}
+
+.btn{
+	min-width:100px;
+	max-width:200px;
+}
+
+th{
+	text-align:center;
+}
+
+td{
+	text-align:center;
+}
+
+</style>
+<div class="container-fluid">
+	<div class="row" style="text-align: center">
+		<div id="box" class="col-lg-8 col-lg-offset-1 col-md-8 col-md-offset-1 col-sm-10 col-xs-12 tac">
+			<div class="row">
+				<div class="col-md-8 col-md-offset-2">
+				<div class="input-group">
+			      <input id="q" type="text" class="form-control" placeholder="输入手机号查询">
+			      <span class="input-group-btn">
+			        <button class="btn btn-default" type="button" id="submit">搜索</button>
+			      </span>
+			    </div>
+			    </div>
+			</div>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>手机号</th>
+						<th>文件名</th>
+						<th>店铺名称</th>
+						<th>状态</th>
+					</tr>
+				</thead>
+				<tbody id="result">
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<script id='t:search_result' type="text/template">
+<!-- 模板部分 -->
+<% for(var i = 0; i<data.length;i++){%>
+<tr>
+	<td><%=data[i].tel%></td>
+	<td><%=data[i].filename%></td>
+	<td><%=data[i].shopname%></td>
+	<td><%=data[i].status%></td>
+</tr>
+<%}%>
+<!-- 模板结束 -->   
+</script>
+{!/block!}
