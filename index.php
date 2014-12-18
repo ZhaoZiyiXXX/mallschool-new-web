@@ -18,8 +18,8 @@ foreach ($urls as $reg => $tpl) {
         foreach ($matched as $k=>$v){
             $smarty->assign($k, $v);
         }
-        $smarty->assign("api_url", "http://api.jige.olege.com");
-        
+        //$smarty->assign("api_url", "http://api.jige.olege.com");
+        $smarty->assign("api_url", "http://api.mallschool.com");
         //如果连接指向了php文件，说明设计模式有问题，不应该出现php页面
         /*if(".php" == substr($tpl, -4)){
         	$smarty->display($tpl);
