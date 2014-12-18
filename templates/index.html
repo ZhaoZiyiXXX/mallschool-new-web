@@ -16,6 +16,7 @@ $(document).ready(function(){
 	     easing: 'easeInExpo', 
 	     complete: function(){},
 	 });
+	
 	$("#click1").fadeIn({
 	     duration: 4000, 
 	     easing: 'easeInExpo', 
@@ -40,23 +41,56 @@ h1{
 	display:none;
 }
 #click1{
-	margin-top:50px;
+	margin:50px 20px;
 	display:none;
-}
-#click2{
-	display:none;
-	margin-top:50px;
+	background:url(/static/images/print-2.png) no-repeat;
+	width:150px;
+	height:150px;
+	float:left;
 }
 
+#click1:hover{
+	background:url(/static/images/print-1.png) no-repeat;
+}
+
+#click2{
+	margin:50px 20px;
+	display:none;
+	background:url(/static/images/query-2.png) no-repeat;
+	width:150px;
+	height:150px;
+	float:left;
+}
+
+#click2:hover{
+	background:url(/static/images/query-1.png) no-repeat;
+}
+
+.buttongroup{
+	margin:0px auto;
+	display:block;
+	width:380px;
+	height:200px;
+	text-align:center;
+}
+.titleimg{
+	margin:10px auto;
+	display:none;
+}
 </style>
 <div class="container-fluid">
 	<div class="row" style="text-align: center">
 		<div id="box" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-			<h1 id="title1" class="ffyh" >期末考试期间，打印还要排队等？</h1>
-			<h1 id="title2" class="ffyh" >打印店电脑病毒多，不想插U盘？</h1>
-			<h1 id="title3" class="ffyh" >打印机上文件太多找不到自己资料？</h1>
-			<a href="/upload"><img id="click1" alt="提交打印" src="/static/images/indexbutton.jpg" /></a>
-			<a href="/query"><img id="click2" alt="提交打印" src="/static/images/querybutton.jpg" /></a>
+			<img id="title1" class="titleimg" src="/static/images/1.png" />
+			<br/>
+			<img id="title2"  class="titleimg" src="/static/images/2.png" />
+			<br/>
+			<img id="title3"  class="titleimg" src="/static/images/3.png" />
+			<br/>
+			<div class="buttongroup">
+				<a  id="click1"  href="/upload"></a>
+				<a  id="click2"  href="/query"></a>
+			</div>
 		</div>
 	</div>
 </div>

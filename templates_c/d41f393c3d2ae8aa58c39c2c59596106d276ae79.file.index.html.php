@@ -1,4 +1,67 @@
-{!extends file='base.html'!} {!block name=base!}
+<?php /* Smarty version Smarty-3.1.19, created on 2014-12-18 23:58:15
+         compiled from "templates\upload\index.html" */ ?>
+<?php /*%%SmartyHeaderCode:105115492f250a080c9-57433249%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+$_valid = $_smarty_tpl->decodeProperties(array (
+  'file_dependency' => 
+  array (
+    'd41f393c3d2ae8aa58c39c2c59596106d276ae79' => 
+    array (
+      0 => 'templates\\upload\\index.html',
+      1 => 1418918294,
+      2 => 'file',
+    ),
+    'c73a908cc33e9641fff8e30c0558466590ee6b50' => 
+    array (
+      0 => 'templates\\base.html',
+      1 => 1418476363,
+      2 => 'file',
+    ),
+  ),
+  'nocache_hash' => '105115492f250a080c9-57433249',
+  'function' => 
+  array (
+  ),
+  'version' => 'Smarty-3.1.19',
+  'unifunc' => 'content_5492f250ac7762_18755668',
+  'has_nocache_code' => false,
+),false); /*/%%SmartyHeaderCode%%*/?>
+<?php if ($_valid && !is_callable('content_5492f250ac7762_18755668')) {function content_5492f250ac7762_18755668($_smarty_tpl) {?><!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+<title>在线打印</title>
+
+<!-- Bootstrap -->
+<link href="http://cdn.bootcss.com/bootstrap/3.2.0/css/bootstrap.min.css" 	rel="stylesheet">
+<link href="/static/css/lib.css" rel="stylesheet">
+<link href="/static/css/main.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+    <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://cdn.bootcss.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="/static/js/jquery-1.11.1.min.js"></script>
+<script src="/static/js/jquery.easing.1.3.js"></script>
+</head>
+<body>
+	<div class="top">
+	<a class="menu-left" href="/"><span
+				class="glyphicon glyphicon-home"></span> 首 页</a> 
+	<a class="menu-right" href="/query"><span 
+				class="glyphicon glyphicon-question-sign"></span>订单查询 </a>
+	<a class="menu-right" href="/upload"><span
+				class="glyphicon glyphicon-edit"></span> 提交订单</a>
+
+	</div>
+	
  <script src="/static/js/jquery.form.js"></script> 
 <style>
 /*a  upload */
@@ -120,7 +183,8 @@ $(document).ready(function(){
 	    $('#loading').prop("src","static/images/loading.gif");
 	    
 		var options = {
-			    url:"{!$api_url!}"+"/PrintFile",
+			    url:"<?php echo $_smarty_tpl->tpl_vars['api_url']->value;?>
+"+"/PrintFile",
 			    dataType: 'json',
 			    type:"POST",
 			    data:{type:"file"},
@@ -283,7 +347,8 @@ $(document).ready(function(){
 	    		}
 	    		$.ajax({
 	    			type:"POST",
-	    			url:"{!$api_url!}"+"/PrintFile",
+	    			url:"<?php echo $_smarty_tpl->tpl_vars['api_url']->value;?>
+"+"/PrintFile",
 	    			dataType:"json",
 	    			data:$("#configform").serialize(),
 	    			success:function(data){
@@ -448,4 +513,7 @@ $(document).ready(function(){
 		</div>
 	</div>
 </div>
-{!/block!}
+
+
+</body>
+</html><?php }} ?>
