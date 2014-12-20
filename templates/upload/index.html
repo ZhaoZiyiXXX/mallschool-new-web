@@ -92,12 +92,28 @@ td.s8{
 	margin-top:1000px;
 }
 
+.qrcode{
+	width:50%;
+	height:auto;
+	float:left;
+	padding:10px;
+}
+.content{
+	width:50%;
+	height:auto;
+	float:right;
+	padding:20px;
+}
 
+#qrcodeimg{
+	width:80%;
+}
 </style>
 <script>
 
 $(document).ready(function(){
 	//价格表动画效果
+	
 	var div = $("#pricetable");
 	div.animate({marginTop:'0',opacity:'0.5'},"3000",'easeInExpo');
 	div.animate({marginTop:'200',opacity:'0.6'},"4000",'easeOutExpo');
@@ -124,7 +140,7 @@ $(document).ready(function(){
 			    dataType: 'json',
 			    type:"POST",
 			    data:{type:"file"},
-			    timeout:20000,
+			    timeout:100000,
 			    success: function(data) {
 			    	$('#submit').removeClass("disabled");
 			    	$('#loading').prop("src","/static/images/OK.png");
@@ -288,7 +304,11 @@ $(document).ready(function(){
 	    			data:$("#configform").serialize(),
 	    			success:function(data){
 	    				if(data.result ==0){
-	    					alert("提交成功");
+	    					var imgurl ="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket="+data.data.ticket;
+	    					$("#qrcodeimg").prop("src",imgurl);
+	    					$('#myModal').modal({
+	    						  keyboard: false
+	    						})
 	    				}else{
 	    					alert("提交失败");
 	    				}
@@ -448,4 +468,21 @@ $(document).ready(function(){
 		</div>
 	</div>
 </div>
+<!-- Modal -->
+<div class="modal fade"  id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+       <h4 class="modal-title">订单提交成功</h4>
+      </div>
+      <div class="modal-body" style="height:260px;display:block">
+      	<div class="qrcode"><img src=""  id="qrcodeimg"/></div>
+      	<div class="content"><p>用微信扫描左侧二维码，关注微信平台并绑定该订单，订单打印完成之后会向您发送通知</p></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 {!/block!}

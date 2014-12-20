@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.19, created on 2014-12-18 23:58:15
+<?php /* Smarty version Smarty-3.1.19, created on 2014-12-20 13:18:55
          compiled from "templates\upload\index.html" */ ?>
 <?php /*%%SmartyHeaderCode:105115492f250a080c9-57433249%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,13 +7,13 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'd41f393c3d2ae8aa58c39c2c59596106d276ae79' => 
     array (
       0 => 'templates\\upload\\index.html',
-      1 => 1418918294,
+      1 => 1419052734,
       2 => 'file',
     ),
     'c73a908cc33e9641fff8e30c0558466590ee6b50' => 
     array (
       0 => 'templates\\base.html',
-      1 => 1418476363,
+      1 => 1419046098,
       2 => 'file',
     ),
   ),
@@ -36,7 +36,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 <title>在线打印</title>
 
 <!-- Bootstrap -->
-<link href="http://cdn.bootcss.com/bootstrap/3.2.0/css/bootstrap.min.css" 	rel="stylesheet">
+<link href="/static/css/bootstrap.min.css" 	rel="stylesheet">
 <link href="/static/css/lib.css" rel="stylesheet">
 <link href="/static/css/main.css" rel="stylesheet">
 
@@ -46,9 +46,8 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     <![endif]-->
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
-<script src="http://cdn.bootcss.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <script src="/static/js/jquery-1.11.1.min.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
 <script src="/static/js/jquery.easing.1.3.js"></script>
 </head>
 <body>
@@ -155,12 +154,28 @@ td.s8{
 	margin-top:1000px;
 }
 
+.qrcode{
+	width:50%;
+	height:auto;
+	float:left;
+	padding:10px;
+}
+.content{
+	width:50%;
+	height:auto;
+	float:right;
+	padding:20px;
+}
 
+#qrcodeimg{
+	width:80%;
+}
 </style>
 <script>
 
 $(document).ready(function(){
 	//价格表动画效果
+	
 	var div = $("#pricetable");
 	div.animate({marginTop:'0',opacity:'0.5'},"3000",'easeInExpo');
 	div.animate({marginTop:'200',opacity:'0.6'},"4000",'easeOutExpo');
@@ -353,7 +368,11 @@ $(document).ready(function(){
 	    			data:$("#configform").serialize(),
 	    			success:function(data){
 	    				if(data.result ==0){
-	    					alert("提交成功");
+	    					var imgurl ="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket="+data.data.ticket;
+	    					$("#qrcodeimg").prop("src",imgurl);
+	    					$('#myModal').modal({
+	    						  keyboard: false
+	    						})
 	    				}else{
 	    					alert("提交失败");
 	    				}
@@ -513,6 +532,23 @@ $(document).ready(function(){
 		</div>
 	</div>
 </div>
+<!-- Modal -->
+<div class="modal fade"  id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+       <h4 class="modal-title">订单提交成功</h4>
+      </div>
+      <div class="modal-body" style="height:260px;display:block">
+      	<div class="qrcode"><img src=""  id="qrcodeimg"/></div>
+      	<div class="content"><p>用微信扫描左侧二维码，关注微信平台并绑定该订单，订单打印完成之后会向您发送通知</p></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 
 </body>
