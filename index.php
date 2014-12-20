@@ -26,7 +26,9 @@ foreach ($urls as $reg => $tpl) {
         }else{
         	$smarty->display($tpl.'.html');
         }*/
-        
+
+
+
         $smarty->display($tpl.'.html');
         break;
     }
