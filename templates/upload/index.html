@@ -324,6 +324,7 @@ $(document).ready(function(){
 	    		$.ajax({
 	    			type:"POST",
 	    			url:"{!$api_url!}"+"/PrintFile",
+	    			timeout : 3000,
 	    			dataType:"json",
 	    			data:$("#configform").serialize(),
 	    			success:function(data){
@@ -333,6 +334,7 @@ $(document).ready(function(){
 	    					$.ajax({
 				    			type:"POST",
 				    			url:"/static/alipay/alipayapi.php",
+				    			timeout : 3000,
 				    			data:{
 				    				WIDout_trade_no:data.data.id,
 			    					WIDsubject:"喵校园云打印订单",
@@ -351,11 +353,11 @@ $(document).ready(function(){
 	    						  keyboard: false
 	    						}) 
 	    				}else{
-	    					alert("提交失败");
+	    					alert("网络异常，请稍后重试");
 	    				}
 	    			},
 	    			error:function(data){
-	    				alert("提交失败error");
+	    				alert("网络异常，请稍后重试");
 	    			},
 	    		});
 	    	}

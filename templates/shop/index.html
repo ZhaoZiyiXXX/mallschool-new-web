@@ -24,7 +24,7 @@ $(document).ready(function(){
 	});
 });
 
-function changestatus(id){
+function changestatus(id,status){
 	$.ajax({
 		type:"POST",
 		url:"{!$api_url!}"+"/PrintFile",
@@ -32,7 +32,7 @@ function changestatus(id){
 		data:{
 			id:id,
 			type:"update",
-			status:"已打印"
+			status:status,
 			},
 		success:function(data){
 			$.ajax({
@@ -126,8 +126,11 @@ td{
 						<td><%=data[i].mark%></td>
 						<td><%=data[i].status%></td>
 						<td><button  id="<%=data[i].id%>" name ="handleorder" class="btn btn-sm btn-default 
-								<%if(data[i].status != "已支付") { %>dpn<%}%>
-								" onclick="changestatus('<%=data[i].id%>');">接单</button></td>
+								<%if(data[i].status == "已打印") { %>dpn<%}%>
+								" onclick="changestatus('<%=data[i].id%>','已打印');">接单</button>
+								<button  id="<%=data[i].id%>" name ="handleorder" class="btn btn-sm btn-default 
+								<%if(data[i].status == "已打印"||data[i].status == "待确认") { %>dpn<%}%>
+								" onclick="changestatus('<%=data[i].id%>','待确认');">拒单</button></td>
 					</tr>
 <%}%>
 <!-- 模板结束 -->   
