@@ -20,12 +20,12 @@ foreach ($urls as $reg => $tpl) {
         }
         $smarty->assign("api_url", "http://api.mallschool.com");
         //如果连接指向了php文件，说明设计模式有问题，不应该出现php页面
-//         if(".php" == substr($tpl, -4)){
-//         	$smarty->display($tpl);
-//         }else{
-//         	$smarty->display($tpl.'.html');
-//         }
-        $smarty->display($tpl.'.html');
+        if(".php" == substr($tpl, -4)){
+        	$smarty->display($tpl);
+        }else{
+        	$smarty->display($tpl.'.html');
+        }
+        //$smarty->display($tpl.'.html');
         break;
     }
 }

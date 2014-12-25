@@ -28,7 +28,7 @@ $parameter = array(
 		
 		//基本参数（可空）
 		"notify_url"	=> $alipay_config['api_url']."/Alipay/Notify",//服务器异步通知页面路径
-		"return_url"	=> $alipay_config['base_url']."/AlipayReturn.html",//同步回传页面
+		"return_url"	=> $alipay_config['base_url']."/AlipayReturn",//同步回传页面
 		"error_notify_url" =>  $alipay_config['api_url']."/Alipay/ErrorNotify",//异常通知页面
 		
 		//业务参数（不可空）
