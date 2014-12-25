@@ -126,7 +126,7 @@ td{
 						<td><%=data[i].mark%></td>
 						<td><%=data[i].status%></td>
 						<td><button  id="<%=data[i].id%>" name ="handleorder" class="btn btn-sm btn-default 
-								<%if(data[i].status != "待打印") { %>dpn<%}%>
+								<%if(data[i].status != "已支付") { %>dpn<%}%>
 								" onclick="changestatus('<%=data[i].id%>');">接单</button></td>
 					</tr>
 <%}%>

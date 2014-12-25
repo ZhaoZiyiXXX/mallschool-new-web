@@ -40,11 +40,13 @@ $parameter = array(
 		
 		//业务参数（可空）
 		"body"	=> "测试的商品描述",//商品描述
-		"extra_common_param" =>$_POST['ticket'],//微信绑定二维码ticket
+		"extra_common_param" =>urlencode($_POST['ticket']) ,//微信绑定二维码ticket
 );
 
 //建立请求
+
 $alipaySubmit = new AlipaySubmit($alipay_config);
-$html_text = $alipaySubmit->buildRequestHttp($parameter);
+
+$html_text = $alipaySubmit->buildRequestForm($parameter,"get", "确认");
 echo $html_text;
 ?>

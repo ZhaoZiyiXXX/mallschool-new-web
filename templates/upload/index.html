@@ -329,18 +329,23 @@ $(document).ready(function(){
 	    			success:function(data){
 	    				if(data.result ==0){
 	    					//订单创建成功
+	    					console.log("订单提交成功");
 	    					$.ajax({
 				    			type:"POST",
 				    			url:"/static/alipay/alipayapi.php",
-				    			dataType:"json",
 				    			data:{
 				    				WIDout_trade_no:data.data.id,
 			    					WIDsubject:"喵校园云打印订单",
 		    						WIDtotal_fee:$('#orderprice').val(),
 		    						ticket:data.data.ticket,
 				    			},
-				    			success:function(data){},
-				    			error:function(data){},
+				    			success:function(data,e){
+				    				$('#resultrest').html(data);
+				    				console.log("alipay订单提交成功"+e.message);
+				    			},
+				    			error:function(data,e){
+				    				console.log("alipay订单提交失败"+e.message);
+				    			},
 	    					});
 	    /* 					var imgurl ="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket="+data.data.ticket;
 	    					$("#qrcodeimg").prop("src",imgurl);
@@ -363,6 +368,7 @@ $(document).ready(function(){
 });
 </script>
 <div class="container-fluid">
+<div id="resultrest"></div>
 	<div class="row" style="text-align: center">
 		<div class="col-lg-7 col-lg-offset-1 col-md-7 col-md-offset-1 col-sm-7 col-xs-12 tac">
 			<h3 style="margin-left:-100px;">提交订单</h3>
@@ -370,7 +376,8 @@ $(document).ready(function(){
 				<div class="form-group">
 			    	<label for="shopname" class="col-sm-2 control-label">店铺名称</label>
 			    	<div class="col-lg-6 col-md-6 col-sm-6 tal">
-						<p name="shopname" class=" form-control-static" value="同济嘉定优之优图文">同济嘉定优之优图文（申通快递旁）<!-- <span class="badge mapbtn" data-toggle="modal" data-target="#mapModal">查看地图</span> --></p>
+						<p class=" form-control-static" >同济嘉定优之优图文（申通快递旁）<!-- <span class="badge mapbtn" data-toggle="modal" data-target="#mapModal">查看地图</span> --></p>
+						<input type="hidden" value="同济嘉定优之优图文" name="shopname" >
 					</div>
 			    </div>
 			    <div class="form-group">
