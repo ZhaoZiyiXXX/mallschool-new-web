@@ -77,6 +77,13 @@ td{
 	text-align:center;
 }
 
+td.infom{
+	color:red;
+	font-weight:blod;
+	font-size:1.1em;
+	background-color:yellow;
+}
+
 </style>
 <div class="container-fluid">
 	<div class="row" style="text-align: center">
@@ -103,6 +110,7 @@ td{
 						<th>领取时间</th>
 						<th>用户备注</th>
 						<th>状态</th>
+						<th>价格</th>
 						<th>操作</th>
 					</tr>
 				</thead>
@@ -118,13 +126,14 @@ td{
 					<tr>
 						<td><%=data[i].tel%></td>
 						<td><a href="http://api.mallschool.com/download?id=<%=data[i].id%>"><%=data[i].filename%></a></td>
-						<td><%=data[i].pagecount%></td>
+						<td class="infom"><%=data[i].pagecount%></td>
 						<td><%=data[i].pagesize%></td>
 						<td><%=data[i].pagecolor%></td>
 						<td><%=data[i].isduplex%></td>
 						<td><%=data[i].gettime%></td>
 						<td><%=data[i].mark%></td>
 						<td><%=data[i].status%></td>
+						<td class="infom"><%=data[i].price%></td>
 						<td><button  id="<%=data[i].id%>" name ="handleorder" class="btn btn-sm btn-default 
 								<%if(data[i].status == "已打印") { %>dpn<%}%>
 								" onclick="changestatus('<%=data[i].id%>','已打印');">接单</button>
