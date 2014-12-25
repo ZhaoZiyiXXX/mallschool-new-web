@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.19, created on 2014-12-20 11:16:57
+<?php /* Smarty version Smarty-3.1.19, created on 2014-12-20 16:21:48
          compiled from "templates\index.html" */ ?>
 <?php /*%%SmartyHeaderCode:212765492f0e25457c1-72378539%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -13,7 +13,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'c73a908cc33e9641fff8e30c0558466590ee6b50' => 
     array (
       0 => 'templates\\base.html',
-      1 => 1419045381,
+      1 => 1419046098,
       2 => 'file',
     ),
   ),
@@ -36,7 +36,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 <title>在线打印</title>
 
 <!-- Bootstrap -->
-<link href="http://cdn.bootcss.com/bootstrap/3.2.0/css/bootstrap.min.css" 	rel="stylesheet">
+<link href="/static/css/bootstrap.min.css" 	rel="stylesheet">
 <link href="/static/css/lib.css" rel="stylesheet">
 <link href="/static/css/main.css" rel="stylesheet">
 

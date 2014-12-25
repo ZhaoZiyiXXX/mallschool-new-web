@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.19, created on 2014-12-20 13:18:55
+<?php /* Smarty version Smarty-3.1.19, created on 2014-12-25 15:42:34
          compiled from "templates\upload\index.html" */ ?>
 <?php /*%%SmartyHeaderCode:105115492f250a080c9-57433249%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'd41f393c3d2ae8aa58c39c2c59596106d276ae79' => 
     array (
       0 => 'templates\\upload\\index.html',
-      1 => 1419052734,
+      1 => 1419493350,
       2 => 'file',
     ),
     'c73a908cc33e9641fff8e30c0558466590ee6b50' => 
@@ -145,6 +145,17 @@ td.s8{
 	float:left;
 }
 
+.pricefont{
+	font-size:1em;
+	line-height:30px;
+	height:30px;
+	float:left;
+	color:#ff6640;
+	font-family:微软雅黑;
+	margin-left:-10px;
+	font-weight:bold;
+}
+
 #filename{
 	font-size:1.2em;
 	font-color:block;
@@ -170,6 +181,16 @@ td.s8{
 #qrcodeimg{
 	width:80%;
 }
+
+.mapbtn{
+	cursor:pointer;
+}
+
+.helptext{
+	font-size:0.7em;
+	margin:-10px auto;
+}
+
 </style>
 <script>
 
@@ -203,7 +224,7 @@ $(document).ready(function(){
 			    dataType: 'json',
 			    type:"POST",
 			    data:{type:"file"},
-			    timeout:20000,
+			    timeout:100000,
 			    success: function(data) {
 			    	$('#submit').removeClass("disabled");
 			    	$('#loading').prop("src","/static/images/OK.png");
@@ -347,7 +368,10 @@ $(document).ready(function(){
 					break;
 			}
 			var price = onepageprice * pagecount;
-			$('span#price').html("总价："+price.toFixed(2)+"元");
+			$('#price').html("总价:"+ price.toFixed(2)+"元");
+			$('#orderprice').val(price.toFixed(2));
+		}else{
+			$('#price').html("");
 		}
 	}
 	
@@ -355,7 +379,7 @@ $(document).ready(function(){
 	    	if($('submit').hasClass("disabled")){
 	    		alert("请先选择要打印的文件");
 	    	}else{
-	    		if($('#tel').val()==""){
+	    		if($('#tel').val()==""|| !(/^1[3|4|5|7|8][0-9]\d{4,8}$/.test($('#tel').val()))){
 	    			alert("手机号是取货的凭证，也是唯一的查询订单的方法，请务必填写");
 	    			$('#tel').focus();
 	    			return false;
@@ -368,11 +392,30 @@ $(document).ready(function(){
 	    			data:$("#configform").serialize(),
 	    			success:function(data){
 	    				if(data.result ==0){
-	    					var imgurl ="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket="+data.data.ticket;
+	    					//订单创建成功
+	    					console.log("订单提交成功");
+	    					$.ajax({
+				    			type:"POST",
+				    			url:"/static/alipay/alipayapi.php",
+				    			data:{
+				    				WIDout_trade_no:data.data.id,
+			    					WIDsubject:"喵校园云打印订单",
+		    						WIDtotal_fee:$('#orderprice').val(),
+		    						ticket:data.data.ticket,
+				    			},
+				    			success:function(data,e){
+				    				$('#resultrest').html(data);
+				    				console.log("alipay订单提交成功"+e.message);
+				    			},
+				    			error:function(data,e){
+				    				console.log("alipay订单提交失败"+e.message);
+				    			},
+	    					});
+	    /* 					var imgurl ="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket="+data.data.ticket;
 	    					$("#qrcodeimg").prop("src",imgurl);
 	    					$('#myModal').modal({
 	    						  keyboard: false
-	    						})
+	    						}) */
 	    				}else{
 	    					alert("提交失败");
 	    				}
@@ -389,10 +432,18 @@ $(document).ready(function(){
 });
 </script>
 <div class="container-fluid">
+<div id="resultrest"></div>
 	<div class="row" style="text-align: center">
 		<div class="col-lg-7 col-lg-offset-1 col-md-7 col-md-offset-1 col-sm-7 col-xs-12 tac">
 			<h3 style="margin-left:-100px;">提交订单</h3>
 			<form id="configform" class="form-horizontal"  role="form" >
+				<div class="form-group">
+			    	<label for="shopname" class="col-sm-2 control-label">店铺名称</label>
+			    	<div class="col-lg-6 col-md-6 col-sm-6 tal">
+						<p class=" form-control-static" >同济嘉定优之优图文（申通快递旁）<!-- <span class="badge mapbtn" data-toggle="modal" data-target="#mapModal">查看地图</span> --></p>
+						<input type="hidden" value="同济嘉定优之优图文" name="shopname" >
+					</div>
+			    </div>
 			    <div class="form-group">
 			    	<label for="pagesize" class="col-sm-2 control-label">纸张尺寸</label>
 			    	<div class="col-lg-6 col-md-6 col-sm-6">
@@ -430,12 +481,11 @@ $(document).ready(function(){
 			    	<div class="tal col-lg-6 col-md-6 col-sm-6">
 				       <div id="gettime" class="radio">
 				       	  <label>
-						    <input type="radio"  name="gettime" id="blankRadio1" value="隔天取"  checked="checked">隔天取（次日9点以后）
+						    <input type="radio"  name="gettime" id="blankRadio1" value="隔天取"  checked="checked">隔天取(次日9点以后)
 						  </label>
 						  <label>
-						    <input type="radio"  name="gettime" id="blankRadio2" value="当天取">当天取（至少间隔3小时）
+						    <input type="radio"  name="gettime" id="blankRadio2" value="当天取">当天取(至少间隔3小时)
 					      </label>
-					      
 						</div>
 					</div>
 			    </div>
@@ -444,7 +494,15 @@ $(document).ready(function(){
 			    	<div class="col-lg-3 col-md-3 col-sm-3">
 					    <input id="pagecount" name="pagecount"  type="text" class="form-control" placeholder="请填写数字">
 					</div>
-					<span id="price" class="tips" style="font-size:1em;color:#666"></span>
+					<div class="col-lg-3 col-md-3 col-sm-3">
+						<p id="price" class="pricefont" ></p>
+					</div>
+			    </div>
+			    <div class="form-group">
+			    	<label class="col-sm-2 control-label"></label>
+			    	<div class="col-lg-6 col-md-6 col-sm-6 tal helptext">
+						<p class=" form-control-static " >如果您填写的页数与文档实际页数不同，可能会需要您到店确认后再打印，因此为了您能及时取到文档，请准确填写打印页数</p>
+					</div>
 			    </div>
 			    <div class="form-group">
 			    	<label for="tel" class="col-sm-2 control-label">填写手机</label>
@@ -455,7 +513,7 @@ $(document).ready(function(){
 			    <div class="form-group">
 			    	<label for="mark" class="col-sm-2 control-label">备注</label>
 			    	<div class="col-lg-6 col-md-6 col-sm-6">
-						<input id="mark" name="mark" type="text" class="form-control" placeholder="如果不是打印全文，请特别标注">
+						<input id="mark" name="mark" type="text" class="form-control" placeholder="特殊要求请标注，比如一面多页，不打印全文等">
 					</div>
 			    </div>
 			    <div class="form-group">
@@ -483,6 +541,7 @@ $(document).ready(function(){
 			  	<input type="hidden" name="uploadfileid"  id="uploadfileid" />
 			  	<input type="hidden" name="uploadfilepath"  id="uploadfilepath" />
 			  	<input type="hidden" name="uploadfilename"  id="uploadfilename" />
+			  	<input type="hidden" name="orderprice"  id="orderprice" />
  			</form>
 		</div>
 		<div id="pricetable" class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
@@ -545,6 +604,16 @@ $(document).ready(function(){
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- Modal -->
+<div class="modal fade"  id="mapModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="height:260px;display:block">
+		<img src="/static/images/print-2.png"/>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
