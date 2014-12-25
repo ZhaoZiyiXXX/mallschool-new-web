@@ -2,6 +2,25 @@
  <script src="/static/js/baiduTemplate.js"></script> 
 <script>
 $(document).ready(function(){
+	$('#q').keydown(function(e){ 
+        if(e.keyCode==13){	// 按下回车键，触发搜索
+    		$.ajax({
+    			type:"GET",
+    			url:"{!$api_url!}"+"/PrintFile",
+    			dataType:"json",
+    			data:{tel:$("#q").val()},
+    			success:function(data){
+    				if(data.result ==0){
+    					var bt=baidu.template;
+    					var html=bt('t:search_result',data);
+    					$("#result").html(html);
+    				}
+    			},
+    			error:function(data){
+    			},
+    		});
+        };
+    });
 	$("#submit").click(function(){
 		$.ajax({
 			type:"GET",
