@@ -43,3 +43,5 @@ Temporary Items
 .apdisk
 
 httpd.conf
+
+templates_c/*
