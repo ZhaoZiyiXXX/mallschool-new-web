@@ -347,11 +347,9 @@ $(document).ready(function(){
 				    				console.log("alipay订单提交失败"+e.message);
 				    			},
 	    					});
-	    /* 					var imgurl ="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket="+data.data.ticket;
-	    					$("#qrcodeimg").prop("src",imgurl);
 	    					$('#myModal').modal({
 	    						  keyboard: false
-	    						}) */
+	    						}) 
 	    				}else{
 	    					alert("提交失败");
 	    				}
@@ -532,14 +530,7 @@ $(document).ready(function(){
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-       <h4 class="modal-title">订单提交成功</h4>
-      </div>
-      <div class="modal-body" style="height:260px;display:block">
-      	<div class="qrcode"><img src=""  id="qrcodeimg"/></div>
-      	<div class="content"><p>用微信扫描左侧二维码，关注微信平台并绑定该订单，订单打印完成之后会向您发送通知</p></div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+       <h4 class="modal-title">正在为您跳转到支付宝页面...</h4>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
