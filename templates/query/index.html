@@ -13,7 +13,9 @@ $(document).ready(function(){
     				if(data.result ==0){
     					var bt=baidu.template;
     					var html=bt('t:search_result',data);
+    					var models=bt('t:search_model',data);
     					$("#result").html(html);
+    					$("#models").html(models);
     				}
     			},
     			error:function(data){
@@ -75,10 +77,12 @@ td{
 			<table class="table">
 				<thead>
 					<tr>
-						<th>手机号</th>
+						<th>订单号</th>
 						<th>文件名</th>
 						<th>店铺名称</th>
+						<th>总价</th>
 						<th>状态</th>
+						<th>操作</th>
 					</tr>
 				</thead>
 				<tbody id="result">
@@ -87,15 +91,43 @@ td{
 		</div>
 	</div>
 </div>
+<div id="models"></div>
 <script id='t:search_result' type="text/template">
 <!-- 模板部分 -->
 <% for(var i = 0; i<data.length;i++){%>
 <tr>
-	<td><%=data[i].tel%></td>
+	<td><%=data[i].scene_id%></td>
 	<td><%=data[i].filename%></td>
 	<td><%=data[i].shopname%></td>
+	<td><%=data[i].price%></td>
 	<td><%=data[i].status%></td>
+	<td><button class="btn btn-default" data-target="#Modal<%=data[i].scene_id%>" data-toggle="modal" >查看详情</button></td>
 </tr>
+<%}%>
+<!-- 模板结束 -->   
+</script>
+<script id='t:search_model' type="text/template">
+<!-- 模板部分 -->
+<% for(var i = 0; i<data.length;i++){%>
+	<div class="modal fade"  id="Modal<%=data[i].scene_id%>">
+  	<div class="modal-dialog">
+    <div class="modal-content">
+      		<div class="modal-header">
+       			<h4><%=data[i].filename%></h4>
+      		</div>
+			<div class="modal-body">
+				<p>打印模式：<%=data[i].isduplex%>打印</p>
+				<p>纸张大小：<%=data[i].pagesize%></p>
+				<p>打印颜色：<%=data[i].pagecolor%></p>
+				<p>打印页数：<%=data[i].pagecount%></p>
+				<p>联系电话：<%=data[i].tel%></p>
+				<p>领取时段：<%=data[i].gettime%></p>
+				<p>店铺名称：<%=data[i].shopname%></p>
+				<p>订单备注：<%=data[i].mark%></p>
+      		</div>
+    </div>
+  	</div>
+	</div>
 <%}%>
 <!-- 模板结束 -->   
 </script>
