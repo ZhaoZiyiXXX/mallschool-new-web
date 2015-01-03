@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.19, created on 2014-12-20 16:20:07
+<?php /* Smarty version Smarty-3.1.19, created on 2014-12-27 13:44:24
          compiled from "templates\query\index.html" */ ?>
 <?php /*%%SmartyHeaderCode:181545492f564d30f68-78032004%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '3b79f12683e1171621fd0b4f6d4e90d829f49e07' => 
     array (
       0 => 'templates\\query\\index.html',
-      1 => 1418692091,
+      1 => 1419659060,
       2 => 'file',
     ),
     'c73a908cc33e9641fff8e30c0558466590ee6b50' => 
@@ -64,6 +64,28 @@ $_valid = $_smarty_tpl->decodeProperties(array (
  <script src="/static/js/baiduTemplate.js"></script> 
 <script>
 $(document).ready(function(){
+	$('#q').keydown(function(e){ 
+        if(e.keyCode==13){	// 按下回车键，触发搜索
+    		$.ajax({
+    			type:"GET",
+    			url:"<?php echo $_smarty_tpl->tpl_vars['api_url']->value;?>
+"+"/PrintFile",
+    			dataType:"json",
+    			data:{tel:$("#q").val()},
+    			success:function(data){
+    				if(data.result ==0){
+    					var bt=baidu.template;
+    					var html=bt('t:search_result',data);
+    					var models=bt('t:search_model',data);
+    					$("#result").html(html);
+    					$("#models").html(models);
+    				}
+    			},
+    			error:function(data){
+    			},
+    		});
+        };
+    });
 	$("#submit").click(function(){
 		$.ajax({
 			type:"GET",
@@ -119,10 +141,12 @@ td{
 			<table class="table">
 				<thead>
 					<tr>
-						<th>手机号</th>
+						<th>订单号</th>
 						<th>文件名</th>
 						<th>店铺名称</th>
+						<th>总价</th>
 						<th>状态</th>
+						<th>操作</th>
 					</tr>
 				</thead>
 				<tbody id="result">
@@ -131,15 +155,43 @@ td{
 		</div>
 	</div>
 </div>
+<div id="models"></div>
 <script id='t:search_result' type="text/template">
 <!-- 模板部分 -->
 <<?php ?>% for(var i = 0; i<data.length;i++){%<?php ?>>
 <tr>
-	<td><<?php ?>%=data[i].tel%<?php ?>></td>
+	<td><<?php ?>%=data[i].scene_id%<?php ?>></td>
 	<td><<?php ?>%=data[i].filename%<?php ?>></td>
 	<td><<?php ?>%=data[i].shopname%<?php ?>></td>
+	<td><<?php ?>%=data[i].price%<?php ?>></td>
 	<td><<?php ?>%=data[i].status%<?php ?>></td>
+	<td><button class="btn btn-default" data-target="#Modal<<?php ?>%=data[i].scene_id%<?php ?>>" data-toggle="modal" >查看详情</button></td>
 </tr>
+<<?php ?>%}%<?php ?>>
+<!-- 模板结束 -->   
+</script>
+<script id='t:search_model' type="text/template">
+<!-- 模板部分 -->
+<<?php ?>% for(var i = 0; i<data.length;i++){%<?php ?>>
+	<div class="modal fade"  id="Modal<<?php ?>%=data[i].scene_id%<?php ?>>">
+  	<div class="modal-dialog">
+    <div class="modal-content">
+      		<div class="modal-header">
+       			<h4><<?php ?>%=data[i].filename%<?php ?>></h4>
+      		</div>
+			<div class="modal-body">
+				<p>打印模式：<<?php ?>%=data[i].isduplex%<?php ?>>打印</p>
+				<p>纸张大小：<<?php ?>%=data[i].pagesize%<?php ?>></p>
+				<p>打印颜色：<<?php ?>%=data[i].pagecolor%<?php ?>></p>
+				<p>打印页数：<<?php ?>%=data[i].pagecount%<?php ?>></p>
+				<p>联系电话：<<?php ?>%=data[i].tel%<?php ?>></p>
+				<p>领取时段：<<?php ?>%=data[i].gettime%<?php ?>></p>
+				<p>店铺名称：<<?php ?>%=data[i].shopname%<?php ?>></p>
+				<p>订单备注：<<?php ?>%=data[i].mark%<?php ?>></p>
+      		</div>
+    </div>
+  	</div>
+	</div>
 <<?php ?>%}%<?php ?>>
 <!-- 模板结束 -->   
 </script>

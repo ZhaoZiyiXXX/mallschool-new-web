@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.19, created on 2014-12-25 15:42:34
+<?php /* Smarty version Smarty-3.1.19, created on 2015-01-03 20:30:39
          compiled from "templates\upload\index.html" */ ?>
 <?php /*%%SmartyHeaderCode:105115492f250a080c9-57433249%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'd41f393c3d2ae8aa58c39c2c59596106d276ae79' => 
     array (
       0 => 'templates\\upload\\index.html',
-      1 => 1419493350,
+      1 => 1420281352,
       2 => 'file',
     ),
     'c73a908cc33e9641fff8e30c0558466590ee6b50' => 
@@ -61,7 +61,8 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 
 	</div>
 	
- <script src="/static/js/jquery.form.js"></script> 
+<script src="/static/js/jquery.form.js"></script>
+<script src="/static/js/baiduTemplate.js"></script>
 <style>
 /*a  upload */
 .a-upload {
@@ -163,6 +164,7 @@ td.s8{
 }
 #pricetable{
 	margin-top:1000px;
+	margin-left:-150px;
 }
 
 .qrcode{
@@ -190,13 +192,36 @@ td.s8{
 	font-size:0.7em;
 	margin:-10px auto;
 }
-
+.main-im{ position:fixed; right: 10px; top:200px; z-index: 100; width: 110px; height: 272px; }
+.main-im .qq-a { display: block; width: 106px; height: 86px; font-size: 14px; color: #0484cd; text-align: center; position: relative; }
+.main-im .qq-a span { bottom: 5px; position: absolute; width: 90px; left: 10px; }
+.main-im .qq-hover-c { width: 70px; height: 70px; border-radius: 35px; position: absolute; left: 18px; top: 10px; overflow: hidden; z-index: 9; }
+.main-im .qq-container { z-index: 99; position: absolute; width: 109px; height: 90px; border-top-left-radius: 10px; border-top-right-radius: 10px; border-bottom: 1px solid #dddddd; background: url(/static/images/qq-icon-bg.png) no-repeat center 8px; }
+.main-im .img-qq {max-width: 60px; display: block; position: absolute; left: 6px; top: 3px; -moz-transition: all 0.5s; -webkit-transition: all 0.5s; -o-transition: all 0.5s; transition: all 0.5s; }
+.main-im .im-qq:hover .img-qq{ max-width: 70px; left: 1px; top: 8px; position: absolute; }
+.main-im .im_main {background: #F9FAFB; border: 1px solid #dddddd; border-radius: 10px; background: #F9FAFB;display:none;}
+.main-im .im_main .im-tel { color: #000000; text-align: center; width: 109px; height: 196px; border-bottom: 1px solid #dddddd; }
+.main-im .im_main .im-tel div{font-weight:bold;font-size: 12px;margin-top:11px;}
+.main-im .im_main .im-tel .tel-num { font-family: Arial; font-weight: bold; color: #e66d15;}
+.main-im .im_main .im-tel:hover { background: #fafafa; }
+.main-im .im_main .weixing-container {width: 55px; height: 47px; border-right: 1px solid #dddddd; background: #f5f5f5; border-bottom-left-radius: 10px; background: url(/static/images/weixing-icon.png) no-repeat center center;float:left;}
+.main-im .im_main .weixing-show {width: 112px; height: 172px; background: #ffffff; border-radius: 10px; border: 1px solid #dddddd; position: absolute; left: -125px; top: -126px; }
+.main-im .im_main .weixing-show .weixing-sanjiao {width:0; height: 0; border-style: solid; border-color: transparent transparent transparent #ffffff; border-width: 6px; left: 112px; top: 134px; position: absolute; z-index: 2;}
+.main-im .im_main .weixing-show .weixing-sanjiao-big { width: 0; height: 0; border-style: solid; border-color: transparent transparent transparent #dddddd; border-width: 8px; left: 112px; top: 132px; position: absolute; }
+.main-im .im_main .weixing-show .weixing-ma { width: 104px; height: 103px; padding-left: 5px; padding-top: 5px; }
+.main-im .im_main .weixing-show .weixing-txt{position:absolute;top:110px;left:7px;width:100px;margin:0 auto; text-align:center; font-size:12px;}
+.main-im .im_main .go-top { width: 50px; height: 47px; background: #f5f5f5; border-bottom-right-radius: 10px; background: url(/static/images/toTop-icon.png) no-repeat center center;float:right;}
+.main-im .im_main .go-top a { display: block; width: 52px; height: 47px; }
+.main-im .close-im { position: absolute; right: 10px; top: -12px; z-index: 100; width: 24px; height: 24px; }
+.main-im .close-im a { display: block; width: 24px; height: 24px; background: url(/static/images/close_im.png) no-repeat left top; }
+.main-im .close-im a:hover { text-decoration: none; }
+.main-im .open-im { cursor: pointer; margin-left: 68px; width: 40px; height: 133px; background: url(/static/images/open_im.png) no-repeat left top; }
 </style>
 <script>
 
 $(document).ready(function(){
 	//价格表动画效果
-	
+	var price_array ;
 	var div = $("#pricetable");
 	div.animate({marginTop:'0',opacity:'0.5'},"3000",'easeInExpo');
 	div.animate({marginTop:'200',opacity:'0.6'},"4000",'easeOutExpo');
@@ -208,6 +233,32 @@ $(document).ready(function(){
 		if(keyCode == 13){
 			return false;
 		}
+	});
+	
+	$.ajax({
+		type:"GET",
+		url:"<?php echo $_smarty_tpl->tpl_vars['api_url']->value;?>
+"+"/Printprice",
+		dataType:"json",
+		data:{
+			shopid:"123456789012345678901234",
+		},
+		success:function(data){
+			if(data.result ==0){
+				var bt=baidu.template;
+				price_array = data.data;
+				var html=bt('t:pricetable',data);
+				$("#prices").html(html);
+				for(var pagesize in data.data){
+					$('#pagesize').html($('#pagesize').html()+"<option value="+pagesize + ">"+pagesize + "</option>");
+				}
+				for(var color in data.data[$('#pagesize').val()]){
+					$('#pagecolor').html($('#pagecolor').html()+"<option value="+color + ">"+color + "</option>");
+				}
+			}
+		},
+		error:function(data){
+		},
 	});
 	
 	$('input[id=fileToUpload]').change(function() {
@@ -239,18 +290,11 @@ $(document).ready(function(){
 			    }
 	    };
 	    $('#configform').ajaxSubmit(options);
-	});   
+	});
 	var isduplex = "双面";
-	var gettime = "隔天取";
 	$(":radio").click(function(e){
 		switch(e.target.id)
 		{
-			case "blankRadio1":
-				gettime = "隔天取";
-				break;
-			case "blankRadio2":
-				gettime = "当天取";
-				break;
 			case "blankRadio3":
 				isduplex = "双面";
 				break;
@@ -263,6 +307,13 @@ $(document).ready(function(){
 	$("select").change(function(){
 		calcprice();
 	});
+	$("select#pagesize").change(function(){
+			$('#pagecolor').html("");
+			for(var color in price_array[$('#pagesize').val()]){
+				$('#pagecolor').html($('#pagecolor').html()+"<option value="+color + ">"+color + "</option>");
+			}
+	});
+	
 	$('#pagecount').change(function(){
 		calcprice();
 	});
@@ -270,106 +321,15 @@ $(document).ready(function(){
 	function calcprice(){
 		var pagecount = $('#pagecount').val();
 		if(pagecount!=""&!isNaN(pagecount)){
-			var onepageprice = 0;
-			switch($('#pagesize').val())
-			{
-				case "A4":
-					if("黑白"==$('#pagecolor').val()){
-						if("隔天取"==gettime){
-							if("单面"==isduplex){
-								onepageprice = 0.12;
-							}else{
-								onepageprice = 0.08;
-							}
-						}else{
-							if("单面"==isduplex){
-								onepageprice = 0.15;
-							}else{
-								onepageprice = 0.10;
-							}
-						}
-					}else{
-						if("隔天取"==gettime){
-							if("单面"==isduplex){
-								onepageprice = 0.90;
-							}else{
-								onepageprice = 0.90;
-							}
-						}else{
-							if("单面"==isduplex){
-								onepageprice = 1.00;
-							}else{
-								onepageprice = 1.00;
-							}
-						}
-					}
-					break;
-				case "A3":
-					if("黑白"==$('#pagecolor').val()){
-						if("隔天取"==gettime){
-							if("单面"==isduplex){
-								onepageprice = 0.20;
-							}else{
-								onepageprice = 0.20;
-							}
-						}else{
-							if("单面"==isduplex){
-								onepageprice = 0.30;
-							}else{
-								onepageprice = 0.25;
-							}
-						}
-					}else{
-						if("隔天取"==gettime){
-							if("单面"==isduplex){
-								onepageprice = 1.80;
-							}else{
-								onepageprice = 1.80;
-							}
-						}else{
-							if("单面"==isduplex){
-								onepageprice = 2.00;
-							}else{
-								onepageprice = 2.00;
-							}
-						}
-					}
-					break;
-				case "B4":
-					if("黑白"==$('#pagecolor').val()){
-						if("隔天取"==gettime){
-							if("单面"==isduplex){
-								onepageprice = 0.20;
-							}else{
-								onepageprice = 0.20;
-							}
-						}else{
-							if("单面"==isduplex){
-								onepageprice = 0.30;
-							}else{
-								onepageprice = 0.25;
-							}
-						}
-					}else{
-						if("隔天取"==gettime){
-							if("单面"==isduplex){
-								onepageprice = 1.80;
-							}else{
-								onepageprice = 1.80;
-							}
-						}else{
-							if("单面"==isduplex){
-								onepageprice = 2.00;
-							}else{
-								onepageprice = 2.00;
-							}
-						}
-					}
-					break;
+			if("单面" ==isduplex ){
+				onepageprice = price_array[$('#pagesize').val()][$('#pagecolor').val()]["单面"];
+			}else{
+				onepageprice = price_array[$('#pagesize').val()][$('#pagecolor').val()]["双面"];
+				pagecount = Math.ceil(pagecount/2);
 			}
 			var price = onepageprice * pagecount;
 			$('#price').html("总价:"+ price.toFixed(2)+"元");
-			$('#orderprice').val(price.toFixed(2));
+			$('#orderprice').val(price.toFixed(2)); 
 		}else{
 			$('#price').html("");
 		}
@@ -388,6 +348,7 @@ $(document).ready(function(){
 	    			type:"POST",
 	    			url:"<?php echo $_smarty_tpl->tpl_vars['api_url']->value;?>
 "+"/PrintFile",
+	    			timeout : 3000,
 	    			dataType:"json",
 	    			data:$("#configform").serialize(),
 	    			success:function(data){
@@ -397,6 +358,7 @@ $(document).ready(function(){
 	    					$.ajax({
 				    			type:"POST",
 				    			url:"/static/alipay/alipayapi.php",
+				    			timeout : 3000,
 				    			data:{
 				    				WIDout_trade_no:data.data.id,
 			    					WIDsubject:"喵校园云打印订单",
@@ -411,34 +373,84 @@ $(document).ready(function(){
 				    				console.log("alipay订单提交失败"+e.message);
 				    			},
 	    					});
-	    /* 					var imgurl ="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket="+data.data.ticket;
-	    					$("#qrcodeimg").prop("src",imgurl);
 	    					$('#myModal').modal({
 	    						  keyboard: false
-	    						}) */
+	    						}) 
 	    				}else{
-	    					alert("提交失败");
+	    					alert("网络异常，请稍后重试");
 	    				}
 	    			},
 	    			error:function(data){
-	    				alert("提交失败error");
+	    				alert("网络异常，请稍后重试");
 	    			},
 	    		});
 	    	}
 	    	return false;
 	    });
 
+	    
+	    $('#close_im').bind('click',function(){
+			$('#main-im').css("height","0");
+			$('#im_main').hide();
+			$('#open_im').show();
+		});
+		$('#open_im').bind('click',function(e){
+			$('#main-im').css("height","272");
+			$('#im_main').show();
+			$(this).hide();
+		});
+		$('.go-top').bind('click',function(){
+			$(window).scrollTop(0);
+		});
+		$(".weixing-container").bind('mouseenter',function(){
+			$('.weixing-show').show();
+		})
+		$(".weixing-container").bind('mouseleave',function(){        
+			$('.weixing-show').hide();
+		});
 	 
+		
 });
 </script>
 <div class="container-fluid">
 <div id="resultrest"></div>
+<div class="main-im">
+  <div id="open_im" class="open-im"></div>  
+  <div class="im_main" id="im_main">
+    <div id="close_im" class="close-im"><a href="javascript:void(0);" title="点击关闭"></a></div>
+    <a href="javascript:;" class="im-qq qq-a" title="在线QQ客服">
+    <div class="qq-container"></div>
+    <div class="qq-hover-c"><img class="img-qq" src="/static/images/qq.png"></div>
+    </a>
+    
+    <div class="im-tel">
+      <div>商家咨询QQ</div>
+      <div class="tel-num"><a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=752251080&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:752251080:51" alt="点击这里给我发消息" title="点击这里给我发消息"/></a></div>
+      <div>喵校园客服</div>
+      <div class="tel-num"><a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=752251080&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:752251080:51" alt="点击这里给我发消息" title="点击这里给我发消息"/></a></div>
+      <div class="tel-num"><a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=51062204&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:51062204:51" alt="点击这里给我发消息" title="点击这里给我发消息"/></a></div>
+      <div class="tel-num"><a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=2251254972&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:2251254972:51" alt="点击这里给我发消息" title="点击这里给我发消息"/></a></div>
+    </div>
+    <div class="im-footer" style="position:relative">
+      <div class="weixing-container">
+        <div class="weixing-show">
+           <div class="weixing-txt">微信扫一扫<br>关注喵校园</div>
+          <img class="weixing-ma" src="/static/images/qrcode.jpg">
+          <div class="weixing-sanjiao"></div>
+          <div class="weixing-sanjiao-big"></div>
+        </div>
+      </div>
+      <div class="go-top"><a href="javascript:;" title="返回顶部"></a> </div>
+	 <div style="clear:both"></div>
+    </div>
+  </div>
+</div>
 	<div class="row" style="text-align: center">
 		<div class="col-lg-7 col-lg-offset-1 col-md-7 col-md-offset-1 col-sm-7 col-xs-12 tac">
 			<h3 style="margin-left:-100px;">提交订单</h3>
 			<form id="configform" class="form-horizontal"  role="form" >
 				<div class="form-group">
-			    	<label for="shopname" class="col-sm-2 control-label">店铺名称</label>
+			    	<label for="shopname" class="col-sm-2 control-label">店铺名称 <span class="glyphicon glyphicon-list-alt"></span></label>
 			    	<div class="col-lg-6 col-md-6 col-sm-6 tal">
 						<p class=" form-control-static" >同济嘉定优之优图文（申通快递旁）<!-- <span class="badge mapbtn" data-toggle="modal" data-target="#mapModal">查看地图</span> --></p>
 						<input type="hidden" value="同济嘉定优之优图文" name="shopname" >
@@ -448,9 +460,6 @@ $(document).ready(function(){
 			    	<label for="pagesize" class="col-sm-2 control-label">纸张尺寸</label>
 			    	<div class="col-lg-6 col-md-6 col-sm-6">
 					    <select id="pagesize"  name="pagesize"class="form-control" >
-						    <option value="A4">A4</option>
-						    <option  value="A3">A3</option>
-						    <option  value="B4">B4</option>
 						</select>
 					</div>
 			    </div>
@@ -458,8 +467,6 @@ $(document).ready(function(){
 			    	<label for="pagecolor" class="col-sm-2 control-label">选择色彩</label>
 			    	<div class="col-lg-6 col-md-6 col-sm-6">
 					    <select id="pagecolor"  name="pagecolor" class="form-control">
-					    	<option  value="黑白">黑白</option>
-						    <option  value="彩色">彩色</option>
 						</select>
 					</div>
 			    </div>
@@ -472,19 +479,6 @@ $(document).ready(function(){
 						  </label>
 						  <label>
 						    <input type="radio"  name="isduplex" id="blankRadio4" value="单面">单面打印
-					      </label>
-						</div>
-					</div>
-			    </div>
-			    <div class="form-group">
-			    	<label for="gettime" class="col-sm-2 control-label">领取时间</label>
-			    	<div class="tal col-lg-6 col-md-6 col-sm-6">
-				       <div id="gettime" class="radio">
-				       	  <label>
-						    <input type="radio"  name="gettime" id="blankRadio1" value="隔天取"  checked="checked">隔天取(次日9点以后)
-						  </label>
-						  <label>
-						    <input type="radio"  name="gettime" id="blankRadio2" value="当天取">当天取(至少间隔3小时)
 					      </label>
 						</div>
 					</div>
@@ -505,7 +499,7 @@ $(document).ready(function(){
 					</div>
 			    </div>
 			    <div class="form-group">
-			    	<label for="tel" class="col-sm-2 control-label">填写手机</label>
+			    	<label for="tel" class="col-sm-2 control-label">填写手机<span class="glyphicon glyphicon-phone"></span></label>
 			    	<div class="col-lg-6 col-md-6 col-sm-6">
 					    <input id="tel" name="tel"  type="text" class="form-control" placeholder="手机号将作为取货凭证">
 					</div>
@@ -551,40 +545,22 @@ $(document).ready(function(){
 					<tr>
 						<th class="s1">大小</th>
 						<th class="s2">颜色</th>
-						<th class="s3">当天取单价</th>
-						<th class="s4">隔天取单价</th>
+						<th class="s3">单面</th>
+						<th class="s4">双面</th>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody id="prices">
 					<tr>
 						<td class="s5">A4</td>
 						<td class="s6">黑白</td>
-						<td class="s5">单：0.15元<br/>双：0.20元</td>
-						<td class="s6">单：0.12元<br/>双：0.16元</td>
+						<td class="s5">0.15</td>
+						<td class="s6">0.20</td>
 					</tr>
 					<tr>
 						<td class="s7">A3</td>
 						<td class="s8">黑白</td>
-						<td class="s7">单：0.30元<br/>双：0.50元</td>
-						<td class="s8">单：0.20元<br/>双：0.40元</td>
-					</tr>
-					<tr>
-						<td class="s5">B4</td>
-						<td class="s6">黑白</td>
-						<td class="s5">单：0.30元<br/>双：0.50元</td>
-						<td class="s6">单：0.20元<br/>双：0.40元</td>
-					</tr>
-					<tr>
-						<td class="s7">A4</td>
-						<td class="s8">彩色</td>
-						<td class="s7">单：1.00元<br/>双：2.00元</td>
-						<td class="s8">单：0.90元<br/>双：1.80元</td>
-					</tr>
-					<tr>
-						<td class="s5">A3</td>
-						<td class="s6">彩色</td>
-						<td class="s5">单：2.00元<br/>双：4.00元</td>
-						<td class="s6">单：1.80元<br/>双：3.60元</td>
+						<td class="s7">0.30</td>
+						<td class="s8">0.50</td>
 					</tr>
 				</tbody>
 			</table>
@@ -596,14 +572,7 @@ $(document).ready(function(){
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-       <h4 class="modal-title">订单提交成功</h4>
-      </div>
-      <div class="modal-body" style="height:260px;display:block">
-      	<div class="qrcode"><img src=""  id="qrcodeimg"/></div>
-      	<div class="content"><p>用微信扫描左侧二维码，关注微信平台并绑定该订单，订单打印完成之后会向您发送通知</p></div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+       <h4 class="modal-title">正在为您跳转到支付宝页面...</h4>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -618,6 +587,43 @@ $(document).ready(function(){
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<script id='t:pricetable' type="text/template">
+<!-- 模板部分 -->
+<<?php ?>%if(data["A4"]["黑白"]) { %<?php ?>>
+<tr>
+	<td class="s5">A4</td>
+	<td class="s6">黑白</td>
+	<td class="s5"><<?php ?>%=data["A4"]["黑白"]["单面"]%<?php ?>></td>
+	<td class="s6"><<?php ?>%=data["A4"]["黑白"]["双面"]%<?php ?>></td>
+</tr>
+<<?php ?>%}%<?php ?>>
+<<?php ?>%if(data["A4"]["彩色"]) { %<?php ?>>
+<tr>
+	<td class="s5">A4</td>
+	<td class="s6">彩色</td>
+	<td class="s5"><<?php ?>%=data["A4"]["彩色"]["单面"]%<?php ?>></td>
+	<td class="s6"><<?php ?>%=data["A4"]["彩色"]["双面"]%<?php ?>></td>
+</tr>
+<<?php ?>%}%<?php ?>>
+<<?php ?>%if(data["A3"]["黑白"]) { %<?php ?>>
+<tr>
+	<td class="s5">A3</td>
+	<td class="s6">黑白</td>
+	<td class="s5"><<?php ?>%=data["A3"]["黑白"]["单面"]%<?php ?>></td>
+	<td class="s6"><<?php ?>%=data["A3"]["黑白"]["双面"]%<?php ?>></td>
+</tr>
+<<?php ?>%}%<?php ?>>
+<<?php ?>%if(data["A3"]["彩色"]) { %<?php ?>>
+<tr>
+	<td class="s5">A3</td>
+	<td class="s6">彩色</td>
+	<td class="s5"><<?php ?>%=data["A3"]["彩色"]["单面"]%<?php ?>></td>
+	<td class="s6"><<?php ?>%=data["A3"]["彩色"]["双面"]%<?php ?>></td>
+</tr>
+<<?php ?>%}%<?php ?>>
+<!-- 模板结束 -->   
+</script>
 
 
 </body>

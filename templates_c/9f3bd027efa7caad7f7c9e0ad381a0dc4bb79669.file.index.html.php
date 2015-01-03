@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.19, created on 2014-12-20 15:27:25
+<?php /* Smarty version Smarty-3.1.19, created on 2014-12-27 15:50:13
          compiled from "templates\shop\index.html" */ ?>
 <?php /*%%SmartyHeaderCode:1697854951aa0666b27-93846115%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '9f3bd027efa7caad7f7c9e0ad381a0dc4bb79669' => 
     array (
       0 => 'templates\\shop\\index.html',
-      1 => 1419058200,
+      1 => 1419666612,
       2 => 'file',
     ),
     'c73a908cc33e9641fff8e30c0558466590ee6b50' => 
@@ -64,6 +64,29 @@ $_valid = $_smarty_tpl->decodeProperties(array (
  <script src="/static/js/baiduTemplate.js"></script> 
 <script>
 $(document).ready(function(){
+	$('#q').keydown(function(e){ 
+        if(e.keyCode==13){	// 按下回车键，触发搜索
+    		$.ajax({
+    			type:"GET",
+    			url:"<?php echo $_smarty_tpl->tpl_vars['api_url']->value;?>
+"+"/PrintFile",
+    			dataType:"json",
+    			data:{
+    				type:"shop",
+    				q:$("#q").val()
+    				},
+    			success:function(data){
+    				if(data.result ==0){
+    					var bt=baidu.template;
+    					var html=bt('t:search_result',data);
+    					$("#result").html(html);
+    				}
+    			},
+    			error:function(data){
+    			},
+    		});
+        };
+    });
 	$("#submit").click(function(){
 		$.ajax({
 			type:"GET",
@@ -87,7 +110,7 @@ $(document).ready(function(){
 	});
 });
 
-function changestatus(id){
+function changestatus(id,status){
 	$.ajax({
 		type:"POST",
 		url:"<?php echo $_smarty_tpl->tpl_vars['api_url']->value;?>
@@ -96,7 +119,7 @@ function changestatus(id){
 		data:{
 			id:id,
 			type:"update",
-			status:"已打印"
+			status:status,
 			},
 		success:function(data){
 			$.ajax({
@@ -153,6 +176,9 @@ td{
 			      <span class="input-group-btn">
 			        <button class="btn btn-default" type="button" id="submit">搜索</button>
 			      </span>
+			      <span class="input-group-btn">
+			      <button class="btn btn-default" type="button" id="hide" style="margin-left:10px;">隐藏已打印订单</button>
+			      </span>
 			    </div>
 			    </div>
 			</div>
@@ -168,6 +194,7 @@ td{
 						<th>领取时间</th>
 						<th>用户备注</th>
 						<th>状态</th>
+						<th>价格</th>
 						<th>操作</th>
 					</tr>
 				</thead>
@@ -183,16 +210,20 @@ td{
 					<tr>
 						<td><<?php ?>%=data[i].tel%<?php ?>></td>
 						<td><a href="http://api.mallschool.com/download?id=<<?php ?>%=data[i].id%<?php ?>>"><<?php ?>%=data[i].filename%<?php ?>></a></td>
-						<td><<?php ?>%=data[i].pagecount%<?php ?>></td>
+						<td class="danger"><<?php ?>%=data[i].pagecount%<?php ?>></td>
 						<td><<?php ?>%=data[i].pagesize%<?php ?>></td>
 						<td><<?php ?>%=data[i].pagecolor%<?php ?>></td>
 						<td><<?php ?>%=data[i].isduplex%<?php ?>></td>
 						<td><<?php ?>%=data[i].gettime%<?php ?>></td>
 						<td><<?php ?>%=data[i].mark%<?php ?>></td>
 						<td><<?php ?>%=data[i].status%<?php ?>></td>
-						<td><button  id="<<?php ?>%=data[i].id%<?php ?>>" name ="handleorder" class="btn btn-sm btn-default 
-								<<?php ?>%if(data[i].status != "待打印") { %<?php ?>>dpn<<?php ?>%}%<?php ?>>
-								" onclick="changestatus('<<?php ?>%=data[i].id%<?php ?>>');">接单</button></td>
+						<td class="danger"><<?php ?>%=data[i].price%<?php ?>></td>
+						<td class="tal"><button  id="<<?php ?>%=data[i].id%<?php ?>>" name ="handleorder" class="btn btn-sm btn-info 
+								<<?php ?>%if(data[i].status == "已打印") { %<?php ?>>dpn<<?php ?>%}%<?php ?>>
+								" onclick="changestatus('<<?php ?>%=data[i].id%<?php ?>>','已打印');">接单</button>
+								<button  id="<<?php ?>%=data[i].id%<?php ?>>" name ="handleorder" class="btn btn-sm btn-warning 
+								<<?php ?>%if(data[i].status == "已打印"||data[i].status == "待确认") { %<?php ?>>dpn<<?php ?>%}%<?php ?>>
+								" onclick="changestatus('<<?php ?>%=data[i].id%<?php ?>>','待确认');">拒单</button></td>
 					</tr>
 <<?php ?>%}%<?php ?>>
 <!-- 模板结束 -->   

@@ -1,5 +1,6 @@
 {!extends file='base.html'!} {!block name=base!}
- <script src="/static/js/jquery.form.js"></script> 
+<script src="/static/js/jquery.form.js"></script>
+<script src="/static/js/baiduTemplate.js"></script>
 <style>
 /*a  upload */
 .a-upload {
@@ -137,7 +138,7 @@ td.s8{
 .main-im .img-qq {max-width: 60px; display: block; position: absolute; left: 6px; top: 3px; -moz-transition: all 0.5s; -webkit-transition: all 0.5s; -o-transition: all 0.5s; transition: all 0.5s; }
 .main-im .im-qq:hover .img-qq{ max-width: 70px; left: 1px; top: 8px; position: absolute; }
 .main-im .im_main {background: #F9FAFB; border: 1px solid #dddddd; border-radius: 10px; background: #F9FAFB;display:none;}
-.main-im .im_main .im-tel { color: #000000; text-align: center; width: 109px; height: 126px; border-bottom: 1px solid #dddddd; }
+.main-im .im_main .im-tel { color: #000000; text-align: center; width: 109px; height: 196px; border-bottom: 1px solid #dddddd; }
 .main-im .im_main .im-tel div{font-weight:bold;font-size: 12px;margin-top:11px;}
 .main-im .im_main .im-tel .tel-num { font-family: Arial; font-weight: bold; color: #e66d15;}
 .main-im .im_main .im-tel:hover { background: #fafafa; }
@@ -158,7 +159,7 @@ td.s8{
 
 $(document).ready(function(){
 	//价格表动画效果
-	
+	var price_array ;
 	var div = $("#pricetable");
 	div.animate({marginTop:'0',opacity:'0.5'},"3000",'easeInExpo');
 	div.animate({marginTop:'200',opacity:'0.6'},"4000",'easeOutExpo');
@@ -170,6 +171,31 @@ $(document).ready(function(){
 		if(keyCode == 13){
 			return false;
 		}
+	});
+	
+	$.ajax({
+		type:"GET",
+		url:"{!$api_url!}"+"/Printprice",
+		dataType:"json",
+		data:{
+			shopid:"123456789012345678901234",
+		},
+		success:function(data){
+			if(data.result ==0){
+				var bt=baidu.template;
+				price_array = data.data;
+				var html=bt('t:pricetable',data);
+				$("#prices").html(html);
+				for(var pagesize in data.data){
+					$('#pagesize').html($('#pagesize').html()+"<option value="+pagesize + ">"+pagesize + "</option>");
+				}
+				for(var color in data.data[$('#pagesize').val()]){
+					$('#pagecolor').html($('#pagecolor').html()+"<option value="+color + ">"+color + "</option>");
+				}
+			}
+		},
+		error:function(data){
+		},
 	});
 	
 	$('input[id=fileToUpload]').change(function() {
@@ -200,18 +226,11 @@ $(document).ready(function(){
 			    }
 	    };
 	    $('#configform').ajaxSubmit(options);
-	});   
+	});
 	var isduplex = "双面";
-	var gettime = "隔天取";
 	$(":radio").click(function(e){
 		switch(e.target.id)
 		{
-			case "blankRadio1":
-				gettime = "隔天取";
-				break;
-			case "blankRadio2":
-				gettime = "当天取";
-				break;
 			case "blankRadio3":
 				isduplex = "双面";
 				break;
@@ -224,6 +243,13 @@ $(document).ready(function(){
 	$("select").change(function(){
 		calcprice();
 	});
+	$("select#pagesize").change(function(){
+			$('#pagecolor').html("");
+			for(var color in price_array[$('#pagesize').val()]){
+				$('#pagecolor').html($('#pagecolor').html()+"<option value="+color + ">"+color + "</option>");
+			}
+	});
+	
 	$('#pagecount').change(function(){
 		calcprice();
 	});
@@ -231,106 +257,15 @@ $(document).ready(function(){
 	function calcprice(){
 		var pagecount = $('#pagecount').val();
 		if(pagecount!=""&!isNaN(pagecount)){
-			var onepageprice = 0;
-			switch($('#pagesize').val())
-			{
-				case "A4":
-					if("黑白"==$('#pagecolor').val()){
-						if("隔天取"==gettime){
-							if("单面"==isduplex){
-								onepageprice = 0.12;
-							}else{
-								onepageprice = 0.08;
-							}
-						}else{
-							if("单面"==isduplex){
-								onepageprice = 0.15;
-							}else{
-								onepageprice = 0.10;
-							}
-						}
-					}else{
-						if("隔天取"==gettime){
-							if("单面"==isduplex){
-								onepageprice = 0.90;
-							}else{
-								onepageprice = 0.90;
-							}
-						}else{
-							if("单面"==isduplex){
-								onepageprice = 1.00;
-							}else{
-								onepageprice = 1.00;
-							}
-						}
-					}
-					break;
-				case "A3":
-					if("黑白"==$('#pagecolor').val()){
-						if("隔天取"==gettime){
-							if("单面"==isduplex){
-								onepageprice = 0.20;
-							}else{
-								onepageprice = 0.20;
-							}
-						}else{
-							if("单面"==isduplex){
-								onepageprice = 0.30;
-							}else{
-								onepageprice = 0.25;
-							}
-						}
-					}else{
-						if("隔天取"==gettime){
-							if("单面"==isduplex){
-								onepageprice = 1.80;
-							}else{
-								onepageprice = 1.80;
-							}
-						}else{
-							if("单面"==isduplex){
-								onepageprice = 2.00;
-							}else{
-								onepageprice = 2.00;
-							}
-						}
-					}
-					break;
-				case "B4":
-					if("黑白"==$('#pagecolor').val()){
-						if("隔天取"==gettime){
-							if("单面"==isduplex){
-								onepageprice = 0.20;
-							}else{
-								onepageprice = 0.20;
-							}
-						}else{
-							if("单面"==isduplex){
-								onepageprice = 0.30;
-							}else{
-								onepageprice = 0.25;
-							}
-						}
-					}else{
-						if("隔天取"==gettime){
-							if("单面"==isduplex){
-								onepageprice = 1.80;
-							}else{
-								onepageprice = 1.80;
-							}
-						}else{
-							if("单面"==isduplex){
-								onepageprice = 2.00;
-							}else{
-								onepageprice = 2.00;
-							}
-						}
-					}
-					break;
+			if("单面" ==isduplex ){
+				onepageprice = price_array[$('#pagesize').val()][$('#pagecolor').val()]["单面"];
+			}else{
+				onepageprice = price_array[$('#pagesize').val()][$('#pagecolor').val()]["双面"];
+				pagecount = Math.ceil(pagecount/2);
 			}
 			var price = onepageprice * pagecount;
 			$('#price').html("总价:"+ price.toFixed(2)+"元");
-			$('#orderprice').val(price.toFixed(2));
+			$('#orderprice').val(price.toFixed(2)); 
 		}else{
 			$('#price').html("");
 		}
@@ -409,6 +344,7 @@ $(document).ready(function(){
 			$('.weixing-show').hide();
 		});
 	 
+		
 });
 </script>
 <div class="container-fluid">
@@ -427,6 +363,8 @@ $(document).ready(function(){
       <div class="tel-num"><a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=752251080&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:752251080:51" alt="点击这里给我发消息" title="点击这里给我发消息"/></a></div>
       <div>喵校园客服</div>
       <div class="tel-num"><a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=752251080&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:752251080:51" alt="点击这里给我发消息" title="点击这里给我发消息"/></a></div>
+      <div class="tel-num"><a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=51062204&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:51062204:51" alt="点击这里给我发消息" title="点击这里给我发消息"/></a></div>
+      <div class="tel-num"><a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=2251254972&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:2251254972:51" alt="点击这里给我发消息" title="点击这里给我发消息"/></a></div>
     </div>
     <div class="im-footer" style="position:relative">
       <div class="weixing-container">
@@ -447,7 +385,7 @@ $(document).ready(function(){
 			<h3 style="margin-left:-100px;">提交订单</h3>
 			<form id="configform" class="form-horizontal"  role="form" >
 				<div class="form-group">
-			    	<label for="shopname" class="col-sm-2 control-label">店铺名称</label>
+			    	<label for="shopname" class="col-sm-2 control-label">店铺名称 <span class="glyphicon glyphicon-list-alt"></span></label>
 			    	<div class="col-lg-6 col-md-6 col-sm-6 tal">
 						<p class=" form-control-static" >同济嘉定优之优图文（申通快递旁）<!-- <span class="badge mapbtn" data-toggle="modal" data-target="#mapModal">查看地图</span> --></p>
 						<input type="hidden" value="同济嘉定优之优图文" name="shopname" >
@@ -457,9 +395,6 @@ $(document).ready(function(){
 			    	<label for="pagesize" class="col-sm-2 control-label">纸张尺寸</label>
 			    	<div class="col-lg-6 col-md-6 col-sm-6">
 					    <select id="pagesize"  name="pagesize"class="form-control" >
-						    <option value="A4">A4</option>
-						    <option  value="A3">A3</option>
-						    <option  value="B4">B4</option>
 						</select>
 					</div>
 			    </div>
@@ -467,8 +402,6 @@ $(document).ready(function(){
 			    	<label for="pagecolor" class="col-sm-2 control-label">选择色彩</label>
 			    	<div class="col-lg-6 col-md-6 col-sm-6">
 					    <select id="pagecolor"  name="pagecolor" class="form-control">
-					    	<option  value="黑白">黑白</option>
-						    <option  value="彩色">彩色</option>
 						</select>
 					</div>
 			    </div>
@@ -481,19 +414,6 @@ $(document).ready(function(){
 						  </label>
 						  <label>
 						    <input type="radio"  name="isduplex" id="blankRadio4" value="单面">单面打印
-					      </label>
-						</div>
-					</div>
-			    </div>
-			    <div class="form-group">
-			    	<label for="gettime" class="col-sm-2 control-label">领取时间</label>
-			    	<div class="tal col-lg-6 col-md-6 col-sm-6">
-				       <div id="gettime" class="radio">
-				       	  <label>
-						    <input type="radio"  name="gettime" id="blankRadio1" value="隔天取"  checked="checked">隔天取(次日9点以后)
-						  </label>
-						  <label>
-						    <input type="radio"  name="gettime" id="blankRadio2" value="当天取">当天取(至少间隔3小时)
 					      </label>
 						</div>
 					</div>
@@ -514,7 +434,7 @@ $(document).ready(function(){
 					</div>
 			    </div>
 			    <div class="form-group">
-			    	<label for="tel" class="col-sm-2 control-label">填写手机</label>
+			    	<label for="tel" class="col-sm-2 control-label">填写手机<span class="glyphicon glyphicon-phone"></span></label>
 			    	<div class="col-lg-6 col-md-6 col-sm-6">
 					    <input id="tel" name="tel"  type="text" class="form-control" placeholder="手机号将作为取货凭证">
 					</div>
@@ -560,40 +480,22 @@ $(document).ready(function(){
 					<tr>
 						<th class="s1">大小</th>
 						<th class="s2">颜色</th>
-						<th class="s3">当天取单价</th>
-						<th class="s4">隔天取单价</th>
+						<th class="s3">单面</th>
+						<th class="s4">双面</th>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody id="prices">
 					<tr>
 						<td class="s5">A4</td>
 						<td class="s6">黑白</td>
-						<td class="s5">单：0.15元<br/>双：0.20元</td>
-						<td class="s6">单：0.12元<br/>双：0.16元</td>
+						<td class="s5">0.15</td>
+						<td class="s6">0.20</td>
 					</tr>
 					<tr>
 						<td class="s7">A3</td>
 						<td class="s8">黑白</td>
-						<td class="s7">单：0.30元<br/>双：0.50元</td>
-						<td class="s8">单：0.20元<br/>双：0.40元</td>
-					</tr>
-					<tr>
-						<td class="s5">B4</td>
-						<td class="s6">黑白</td>
-						<td class="s5">单：0.30元<br/>双：0.50元</td>
-						<td class="s6">单：0.20元<br/>双：0.40元</td>
-					</tr>
-					<tr>
-						<td class="s7">A4</td>
-						<td class="s8">彩色</td>
-						<td class="s7">单：1.00元<br/>双：2.00元</td>
-						<td class="s8">单：0.90元<br/>双：1.80元</td>
-					</tr>
-					<tr>
-						<td class="s5">A3</td>
-						<td class="s6">彩色</td>
-						<td class="s5">单：2.00元<br/>双：4.00元</td>
-						<td class="s6">单：1.80元<br/>双：3.60元</td>
+						<td class="s7">0.30</td>
+						<td class="s8">0.50</td>
 					</tr>
 				</tbody>
 			</table>
@@ -620,4 +522,41 @@ $(document).ready(function(){
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<script id='t:pricetable' type="text/template">
+<!-- 模板部分 -->
+<%if(data["A4"]["黑白"]) { %>
+<tr>
+	<td class="s5">A4</td>
+	<td class="s6">黑白</td>
+	<td class="s5"><%=data["A4"]["黑白"]["单面"]%></td>
+	<td class="s6"><%=data["A4"]["黑白"]["双面"]%></td>
+</tr>
+<%}%>
+<%if(data["A4"]["彩色"]) { %>
+<tr>
+	<td class="s5">A4</td>
+	<td class="s6">彩色</td>
+	<td class="s5"><%=data["A4"]["彩色"]["单面"]%></td>
+	<td class="s6"><%=data["A4"]["彩色"]["双面"]%></td>
+</tr>
+<%}%>
+<%if(data["A3"]["黑白"]) { %>
+<tr>
+	<td class="s5">A3</td>
+	<td class="s6">黑白</td>
+	<td class="s5"><%=data["A3"]["黑白"]["单面"]%></td>
+	<td class="s6"><%=data["A3"]["黑白"]["双面"]%></td>
+</tr>
+<%}%>
+<%if(data["A3"]["彩色"]) { %>
+<tr>
+	<td class="s5">A3</td>
+	<td class="s6">彩色</td>
+	<td class="s5"><%=data["A3"]["彩色"]["单面"]%></td>
+	<td class="s6"><%=data["A3"]["彩色"]["双面"]%></td>
+</tr>
+<%}%>
+<!-- 模板结束 -->   
+</script>
 {!/block!}
