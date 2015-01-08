@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.19, created on 2015-01-08 11:23:31
+<?php /* Smarty version Smarty-3.1.19, created on 2015-01-08 14:37:05
          compiled from "templates\upload\index.html" */ ?>
 <?php /*%%SmartyHeaderCode:105115492f250a080c9-57433249%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'd41f393c3d2ae8aa58c39c2c59596106d276ae79' => 
     array (
       0 => 'templates\\upload\\index.html',
-      1 => 1420687407,
+      1 => 1420699023,
       2 => 'file',
     ),
     'c73a908cc33e9641fff8e30c0558466590ee6b50' => 
@@ -209,6 +209,17 @@ td.s8{
 	border:1px solid #eee;
 }
 
+.shopbox a:active{
+	background-color:#428bca;
+}
+
+.shopbox a:hover{
+	background-color:#428bca;
+}
+a.active{
+	background-color:#428bca;
+}
+
 .main-im{ position:fixed; right: 10px; top:200px; z-index: 100; width: 110px; height: 272px; }
 .main-im .qq-a { display: block; width: 106px; height: 86px; font-size: 14px; color: #0484cd; text-align: center; position: relative; }
 .main-im .qq-a span { bottom: 5px; position: absolute; width: 90px; left: 10px; }
@@ -247,7 +258,7 @@ td.s8{
     
     <div class="im-tel">
       <div>商家咨询QQ</div>
-      <div class="tel-num"><a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=752251080&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:752251080:51" alt="点击这里给我发消息" title="点击这里给我发消息"/></a></div>
+      <div id="serviceqq" class="tel-num"><a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=752251080&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:752251080:51" alt="点击这里给我发消息" title="点击这里给我发消息"/></a></div>
       <div>喵校园客服</div>
       <div class="tel-num"><a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=752251080&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:752251080:51" alt="点击这里给我发消息" title="点击这里给我发消息"/></a></div>
       <div class="tel-num"><a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=51062204&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:51062204:51" alt="点击这里给我发消息" title="点击这里给我发消息"/></a></div>
@@ -274,8 +285,8 @@ td.s8{
 				<div class="form-group">
 			    	<label for="shopname" class="col-sm-2 control-label">店铺名称 </label>
 			    	<div class="col-lg-6 col-md-6 col-sm-6 tal">
-						<p class=" form-control-static" >同济嘉定优之优图文（申通快递旁）<!-- <span class="badge mapbtn" data-toggle="modal" data-target="#mapModal">查看地图</span> --></p>
-						<input type="hidden" value="同济嘉定优之优图文" name="shopname" >
+						<p id="shopdisplayname" class=" form-control-static" >尚未选择 <span class="badge mapbtn" data-toggle="modal" data-target="#selectshop">切换店铺</span> </p>
+						<input id="shopname" type="hidden" value="同济嘉定优之优图文" name="shopname" >
 					</div>
 			    </div>
 			    <div class="form-group">
@@ -388,15 +399,6 @@ td.s8{
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <!-- Modal -->
-<div class="modal fade"  id="mapModal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-body" style="height:260px;display:block">
-		<img src="/static/images/print-2.png"/>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
 <div class="modal fade"  id="selectshop">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -405,10 +407,8 @@ td.s8{
       	</div>
       <div class="modal-body">
 	      <div id="schoolbox" class="shopbox">
-	      	<a>test</a><a>test</a><a>test</a><a>test</a><a>test</a>
 	      </div>
 	      <div id="schoolshopbox" class="shopbox">
-	      	<a>test</a><a>test</a><a>test</a><a>test</a><a>test</a>
 	      </div>
       </div>
       <div class="modal-footer">

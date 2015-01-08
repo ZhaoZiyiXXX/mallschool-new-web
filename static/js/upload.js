@@ -1,8 +1,10 @@
 document.write("<script src=\"/static/js/config.js\"></script>");
+var isduplex = "双面";
+var price_array ;
 function initshopinfo(){
 	var shopid = arguments[0] ? arguments[0] : null;
 	if(null == shopid){
-		//首先获取学校列表
+		//首先获取店铺列表
 		$.ajax({
 			type:"GET",
 			url:API_ROOT+"/Printshops",
@@ -11,12 +13,19 @@ function initshopinfo(){
 			},
 			success:function(data){
 				if(data.result ==0){
-					var temphtml;
+					var temphtml = "";
 					for(var i=0;i<data.data.length;i++){
-						temphtml +="<a>"+data.data[i].name+"</a>";
+						temphtml +="<a onclick=\"changeshop('"+data.data[i].id+"')\">"+data.data[i].displayname+"</a>";
 					}
 					$('#schoolbox').html(temphtml);
 					$('#schoolshopbox').html();
+					$('#selectshop').modal({
+						  keyboard: false
+						});
+					$(".shopbox a").click(function(){
+						$(".shopbox a").removeClass("active");
+						$(this).addClass("active");
+					});
 				}
 			},
 			error:function(data){
@@ -37,8 +46,11 @@ function initshopinfo(){
 			if(data.result ==0){
 				var bt=baidu.template;
 				price_array = data.data;
+				console.log(price_array);
 				var html=bt('t:pricetable',data);
 				$("#prices").html(html);
+				$('#pagesize').html("");
+				$('#pagecolor').html("");
 				for(var pagesize in data.data){
 					$('#pagesize').html($('#pagesize').html()+"<option value="+pagesize + ">"+pagesize + "</option>");
 				}
@@ -51,8 +63,37 @@ function initshopinfo(){
 		},
 	});
 	
+	$.ajax({
+		type:"GET",
+		url:API_ROOT+"/Printshop",
+		dataType:"json",
+		data:{
+			shopid:shopid,
+			type:'id',
+		},
+		success:function(data){
+			$('#selectshop').modal('hide');
+			if(data.result ==0){
+				$('#shopdisplayname').html(data.data.displayname+ '<span class="badge mapbtn" data-toggle="modal" data-target="#selectshop">切换店铺</span>');
+				$('#shopname').text(data.data.displayname);
+				if(0 !=data.data.qq){
+					$('#serviceqq').html("<a target=\"_blank\" href=\"http://wpa.qq.com/msgrd?v=3&uin="+data.data.qq +
+						"&site=qq&menu=yes\"><img border=\"0\" src=\"http://wpa.qq.com/pa?p=2:"+data.data.qq+
+						":51\" alt=\"点击这里给我发消息\" title=\"点击这里给我发消息\"/></a>");
+				}else{
+					$('#serviceqq').html("<a>暂未提供</a>");
+				}
+			}
+		},
+		error:function(data){
+		},
+	});
 }
-
+function changeshop(shopid){
+	$('#selectshopsubmit').click(function(){
+		initshopinfo(shopid);
+	});
+}
 function calcprice(){
 	var pagecount = $('#pagecount').val();
 	if(pagecount!=""&!isNaN(pagecount)){
@@ -71,7 +112,7 @@ function calcprice(){
 }
 $(document).ready(function(){
 	//价格表动画效果
-	var price_array ;
+	
 	var div = $("#pricetable");
 	div.animate({marginTop:'0',opacity:'0.5'},"3000",'easeInExpo');
 	div.animate({marginTop:'200',opacity:'0.6'},"4000",'easeOutExpo');
@@ -114,7 +155,7 @@ $(document).ready(function(){
 	    };
 	    $('#configform').ajaxSubmit(options);
 	});
-	var isduplex = "双面";
+	
 	$(":radio").click(function(e){
 		switch(e.target.id)
 		{
@@ -132,6 +173,7 @@ $(document).ready(function(){
 	});
 	$("select#pagesize").change(function(){
 			$('#pagecolor').html("");
+			console.log(price_array);
 			for(var color in price_array[$('#pagesize').val()]){
 				$('#pagecolor').html($('#pagecolor').html()+"<option value="+color + ">"+color + "</option>");
 			}
@@ -192,10 +234,6 @@ $(document).ready(function(){
     	}
     	return false;
     });
-
-	$('#selectshopsubmit').click(function(){
-		initshopinfo("123456789012345678901234");
-	});
 	 //客服QQ相关代码开始
     $('#close_im').bind('click',function(){
 		$('#main-im').css("height","0");
