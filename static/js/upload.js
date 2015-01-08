@@ -38,6 +38,7 @@ function initshopinfo(){
 		type:"GET",
 		url:API_ROOT+"/Printprice",
 		dataType:"json",
+		async:false,
 		data:{
 			shopid:shopid,
 		},
@@ -66,6 +67,7 @@ function initshopinfo(){
 	$.ajax({
 		type:"GET",
 		url:API_ROOT+"/Printshop",
+		async:false,
 		dataType:"json",
 		data:{
 			shopid:shopid,
@@ -75,7 +77,7 @@ function initshopinfo(){
 			$('#selectshop').modal('hide');
 			if(data.result ==0){
 				$('#shopdisplayname').html(data.data.displayname+ '<span class="badge mapbtn" data-toggle="modal" data-target="#selectshop">切换店铺</span>');
-				$('#shopname').text(data.data.displayname);
+				$('#shopname').val(data.data.displayname);
 				if(0 !=data.data.qq){
 					$('#serviceqq').html("<a target=\"_blank\" href=\"http://wpa.qq.com/msgrd?v=3&uin="+data.data.qq +
 						"&site=qq&menu=yes\"><img border=\"0\" src=\"http://wpa.qq.com/pa?p=2:"+data.data.qq+
@@ -112,7 +114,9 @@ function calcprice(){
 }
 $(document).ready(function(){
 	//价格表动画效果
-	
+	$.ajaxSetup({
+		  timeout:3000,
+		});
 	var div = $("#pricetable");
 	div.animate({marginTop:'0',opacity:'0.5'},"3000",'easeInExpo');
 	div.animate({marginTop:'200',opacity:'0.6'},"4000",'easeOutExpo');
