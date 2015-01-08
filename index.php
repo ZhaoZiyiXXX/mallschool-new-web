@@ -18,6 +18,7 @@ foreach ($urls as $reg => $tpl) {
         foreach ($matched as $k=>$v){
             $smarty->assign($k, $v);
         }
+        //记得js里面也有一个配置文件，需要同步修改
         $smarty->assign("api_url", "http://api.mallschool.com");
         //如果连接指向了php文件，说明设计模式有问题，不应该出现php页面
         if("AlipayReturn.php"==$tpl){

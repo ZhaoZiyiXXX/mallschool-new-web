@@ -1,0 +1,1 @@
+var API_ROOT = "http://api.mallschool.com";

@@ -1,6 +1,7 @@
 {!extends file='base.html'!} {!block name=base!}
 <script src="/static/js/jquery.form.js"></script>
 <script src="/static/js/baiduTemplate.js"></script>
+<script src="/static/js/upload.js"></script>
 <style>
 /*a  upload */
 .a-upload {
@@ -130,6 +131,22 @@ td.s8{
 	font-size:0.7em;
 	margin:-10px auto;
 }
+.shopbox{
+	display:inline-block;
+	height:1.5em;
+	width:100%;
+	margin:5px 0;
+}
+.shopbox a{
+	display:block;
+	background-color:#5bc0de;
+	color:#fff;
+	padding:3px;
+	float:left;
+	margin:0 5px;
+	border:1px solid #eee;
+}
+
 .main-im{ position:fixed; right: 10px; top:200px; z-index: 100; width: 110px; height: 272px; }
 .main-im .qq-a { display: block; width: 106px; height: 86px; font-size: 14px; color: #0484cd; text-align: center; position: relative; }
 .main-im .qq-a span { bottom: 5px; position: absolute; width: 90px; left: 10px; }
@@ -155,198 +172,6 @@ td.s8{
 .main-im .close-im a:hover { text-decoration: none; }
 .main-im .open-im { cursor: pointer; margin-left: 68px; width: 40px; height: 133px; background: url(/static/images/open_im.png) no-repeat left top; }
 </style>
-<script>
-
-$(document).ready(function(){
-	//价格表动画效果
-	var price_array ;
-	var div = $("#pricetable");
-	div.animate({marginTop:'0',opacity:'0.5'},"3000",'easeInExpo');
-	div.animate({marginTop:'200',opacity:'0.6'},"4000",'easeOutExpo');
-	div.animate({marginTop:'0',opacity:'0.7'},"4000",'easeInExpo');
-	div.animate({marginTop:'70',opacity:'0.8'},"5000",'easeOutExpo');
-	div.animate({marginTop:'0',opacity:'0.9'},"5000",'easeInExpo');
-	$("input").keypress(function(e){
-		var keyCode= e.keyCode?e.keyCode:e.witch?e.witch:e.charCode;
-		if(keyCode == 13){
-			return false;
-		}
-	});
-	
-	$.ajax({
-		type:"GET",
-		url:"{!$api_url!}"+"/Printprice",
-		dataType:"json",
-		data:{
-			shopid:"123456789012345678901234",
-		},
-		success:function(data){
-			if(data.result ==0){
-				var bt=baidu.template;
-				price_array = data.data;
-				var html=bt('t:pricetable',data);
-				$("#prices").html(html);
-				for(var pagesize in data.data){
-					$('#pagesize').html($('#pagesize').html()+"<option value="+pagesize + ">"+pagesize + "</option>");
-				}
-				for(var color in data.data[$('#pagesize').val()]){
-					$('#pagecolor').html($('#pagecolor').html()+"<option value="+color + ">"+color + "</option>");
-				}
-			}
-		},
-		error:function(data){
-		},
-	});
-	
-	$('input[id=fileToUpload]').change(function() {
-	    var path = $(this).val();
-	    path = path.split("\\");
-	    $('#filename').html(path[path.length-1]);
-	    $('#submit').addClass("disabled");
-	    $('#loading').removeClass("dpn");
-	    $('#loading').prop("src","static/images/loading.gif");
-	    
-		var options = {
-			    url:"{!$api_url!}"+"/PrintFile",
-			    dataType: 'json',
-			    type:"POST",
-			    data:{type:"file"},
-			    timeout:100000,
-			    success: function(data) {
-			    	$('#submit').removeClass("disabled");
-			    	$('#loading').prop("src","/static/images/OK.png");
-			    	$('#uploadfileid').val(data.data.id);
-			    	$('#uploadfilepath').val(data.data.filepath);
-			    	$('#uploadfilename').val($('#filename').html());
-			    },
-			    error:function(data){
-			    	$('#submit').addClass("disabled");
-			    	$('#loading').addClass("dpn");
-			    	$('#filename').html("上传失败，请刷新后重试");
-			    }
-	    };
-	    $('#configform').ajaxSubmit(options);
-	});
-	var isduplex = "双面";
-	$(":radio").click(function(e){
-		switch(e.target.id)
-		{
-			case "blankRadio3":
-				isduplex = "双面";
-				break;
-			case "blankRadio4":
-				isduplex = "单面";
-				break;
-		}
-		calcprice();
-	});
-	$("select").change(function(){
-		calcprice();
-	});
-	$("select#pagesize").change(function(){
-			$('#pagecolor').html("");
-			for(var color in price_array[$('#pagesize').val()]){
-				$('#pagecolor').html($('#pagecolor').html()+"<option value="+color + ">"+color + "</option>");
-			}
-	});
-	
-	$('#pagecount').change(function(){
-		calcprice();
-	});
-
-	function calcprice(){
-		var pagecount = $('#pagecount').val();
-		if(pagecount!=""&!isNaN(pagecount)){
-			if("单面" ==isduplex ){
-				onepageprice = price_array[$('#pagesize').val()][$('#pagecolor').val()]["单面"];
-			}else{
-				onepageprice = price_array[$('#pagesize').val()][$('#pagecolor').val()]["双面"];
-				pagecount = Math.ceil(pagecount/2);
-			}
-			var price = onepageprice * pagecount;
-			$('#price').html("总价:"+ price.toFixed(2)+"元");
-			$('#orderprice').val(price.toFixed(2)); 
-		}else{
-			$('#price').html("");
-		}
-	}
-	
-	    $("#submit").click(function(){
-	    	if($('submit').hasClass("disabled")){
-	    		alert("请先选择要打印的文件");
-	    	}else{
-	    		if($('#tel').val()==""|| !(/^1[3|4|5|7|8][0-9]\d{4,8}$/.test($('#tel').val()))){
-	    			alert("手机号是取货的凭证，也是唯一的查询订单的方法，请务必填写");
-	    			$('#tel').focus();
-	    			return false;
-	    		}
-	    		$.ajax({
-	    			type:"POST",
-	    			url:"{!$api_url!}"+"/PrintFile",
-	    			timeout : 3000,
-	    			dataType:"json",
-	    			data:$("#configform").serialize(),
-	    			success:function(data){
-	    				if(data.result ==0){
-	    					//订单创建成功
-	    					console.log("订单提交成功");
-	    					$.ajax({
-				    			type:"POST",
-				    			url:"/static/alipay/alipayapi.php",
-				    			timeout : 3000,
-				    			data:{
-				    				WIDout_trade_no:data.data.id,
-			    					WIDsubject:"喵校园云打印订单",
-		    						WIDtotal_fee:$('#orderprice').val(),
-		    						ticket:data.data.ticket,
-				    			},
-				    			success:function(data,e){
-				    				$('#resultrest').html(data);
-				    				console.log("alipay订单提交成功"+e.message);
-				    			},
-				    			error:function(data,e){
-				    				console.log("alipay订单提交失败"+e.message);
-				    			},
-	    					});
-	    					$('#myModal').modal({
-	    						  keyboard: false
-	    						}) 
-	    				}else{
-	    					alert("网络异常，请稍后重试");
-	    				}
-	    			},
-	    			error:function(data){
-	    				alert("网络异常，请稍后重试");
-	    			},
-	    		});
-	    	}
-	    	return false;
-	    });
-
-	    
-	    $('#close_im').bind('click',function(){
-			$('#main-im').css("height","0");
-			$('#im_main').hide();
-			$('#open_im').show();
-		});
-		$('#open_im').bind('click',function(e){
-			$('#main-im').css("height","272");
-			$('#im_main').show();
-			$(this).hide();
-		});
-		$('.go-top').bind('click',function(){
-			$(window).scrollTop(0);
-		});
-		$(".weixing-container").bind('mouseenter',function(){
-			$('.weixing-show').show();
-		})
-		$(".weixing-container").bind('mouseleave',function(){        
-			$('.weixing-show').hide();
-		});
-	 
-		
-});
-</script>
 <div class="container-fluid">
 <div id="resultrest"></div>
 <div class="main-im">
@@ -385,7 +210,7 @@ $(document).ready(function(){
 			<h3 style="margin-left:-100px;">提交订单</h3>
 			<form id="configform" class="form-horizontal"  role="form" >
 				<div class="form-group">
-			    	<label for="shopname" class="col-sm-2 control-label">店铺名称 <span class="glyphicon glyphicon-list-alt"></span></label>
+			    	<label for="shopname" class="col-sm-2 control-label">店铺名称 </label>
 			    	<div class="col-lg-6 col-md-6 col-sm-6 tal">
 						<p class=" form-control-static" >同济嘉定优之优图文（申通快递旁）<!-- <span class="badge mapbtn" data-toggle="modal" data-target="#mapModal">查看地图</span> --></p>
 						<input type="hidden" value="同济嘉定优之优图文" name="shopname" >
@@ -434,7 +259,7 @@ $(document).ready(function(){
 					</div>
 			    </div>
 			    <div class="form-group">
-			    	<label for="tel" class="col-sm-2 control-label">填写手机<span class="glyphicon glyphicon-phone"></span></label>
+			    	<label for="tel" class="col-sm-2 control-label">填写手机</label>
 			    	<div class="col-lg-6 col-md-6 col-sm-6">
 					    <input id="tel" name="tel"  type="text" class="form-control" placeholder="手机号将作为取货凭证">
 					</div>
@@ -485,18 +310,6 @@ $(document).ready(function(){
 					</tr>
 				</thead>
 				<tbody id="prices">
-					<tr>
-						<td class="s5">A4</td>
-						<td class="s6">黑白</td>
-						<td class="s5">0.15</td>
-						<td class="s6">0.20</td>
-					</tr>
-					<tr>
-						<td class="s7">A3</td>
-						<td class="s8">黑白</td>
-						<td class="s7">0.30</td>
-						<td class="s8">0.50</td>
-					</tr>
 				</tbody>
 			</table>
 		</div>
@@ -522,7 +335,26 @@ $(document).ready(function(){
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
+<div class="modal fade"  id="selectshop">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    	<div class="modal-header">
+       		<h4 class="modal-title">选择店铺</h4>
+      	</div>
+      <div class="modal-body">
+	      <div id="schoolbox" class="shopbox">
+	      	<a>test</a><a>test</a><a>test</a><a>test</a><a>test</a>
+	      </div>
+	      <div id="schoolshopbox" class="shopbox">
+	      	<a>test</a><a>test</a><a>test</a><a>test</a><a>test</a>
+	      </div>
+      </div>
+      <div class="modal-footer">
+      	<button id="selectshopsubmit" class="btn btn-default">确定</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <script id='t:pricetable' type="text/template">
 <!-- 模板部分 -->
 <%if(data["A4"]["黑白"]) { %>
