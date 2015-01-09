@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.19, created on 2014-12-20 16:21:48
+<?php /* Smarty version Smarty-3.1.19, created on 2015-01-09 18:53:21
          compiled from "templates\index.html" */ ?>
 <?php /*%%SmartyHeaderCode:212765492f0e25457c1-72378539%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '56a50882f80a7f7a4a3178f05f3732ba9a9fa35e' => 
     array (
       0 => 'templates\\index.html',
-      1 => 1418917418,
+      1 => 1420800800,
       2 => 'file',
     ),
     'c73a908cc33e9641fff8e30c0558466590ee6b50' => 
@@ -139,16 +139,33 @@ h1{
 	margin:10px auto;
 	display:none;
 }
+
+.gifimage{
+	width:100%;
+}
 </style>
 <div class="container-fluid">
 	<div class="row" style="text-align: center">
 		<div id="box" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-			<img id="title1" class="titleimg" src="/static/images/1.png" />
+			<!--  <img id="title1" class="titleimg" src="/static/images/1.png" />
 			<br/>
 			<img id="title2"  class="titleimg" src="/static/images/2.png" />
 			<br/>
 			<img id="title3"  class="titleimg" src="/static/images/3.png" />
 			<br/>
+			-->
+			<div class="col-md-4">
+				<img id="title1" class="titleimg gifimage" src="/static/images/1.png" />
+				<img class="gifimage"  src="/static/images/001.gif" />
+			</div>
+			<div class="col-md-4">
+				<img id="title2"  class="titleimg gifimage" src="/static/images/2.png" />
+				<img class="gifimage"  src="/static/images/002.gif" />
+			</div>
+			<div class="col-md-4">
+				<img id="title3"  class="titleimg gifimage" src="/static/images/3.png" />
+				<img class="gifimage" src="/static/images/003.gif" />
+			</div>
 			<div class="buttongroup">
 				<a  id="click1"  href="/upload"></a>
 				<a  id="click2"  href="/query"></a>
