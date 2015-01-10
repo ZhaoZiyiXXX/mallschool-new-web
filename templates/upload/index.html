@@ -357,7 +357,7 @@ a.active{
 </div><!-- /.modal -->
 <script id='t:pricetable' type="text/template">
 <!-- 模板部分 -->
-<%if(data["A4"]["黑白"]) { %>
+<%if(data["A4"]["黑白"] != undefined) { %>
 <tr>
 	<td class="s5">A4</td>
 	<td class="s6">黑白</td>
@@ -365,7 +365,7 @@ a.active{
 	<td class="s6"><%=data["A4"]["黑白"]["双面"]%></td>
 </tr>
 <%}%>
-<%if(data["A4"]["彩色"]) { %>
+<%if(data["A4"]["彩色"] != undefined) { %>
 <tr>
 	<td class="s5">A4</td>
 	<td class="s6">彩色</td>
@@ -373,7 +373,7 @@ a.active{
 	<td class="s6"><%=data["A4"]["彩色"]["双面"]%></td>
 </tr>
 <%}%>
-<%if(data["A3"]["黑白"]) { %>
+<%if(data["A3"]["黑白"] != undefined) { %>
 <tr>
 	<td class="s5">A3</td>
 	<td class="s6">黑白</td>
@@ -381,7 +381,7 @@ a.active{
 	<td class="s6"><%=data["A3"]["黑白"]["双面"]%></td>
 </tr>
 <%}%>
-<%if(data["A3"]["彩色"]) { %>
+<%if(data["A3"]["彩色"] != undefined) { %>
 <tr>
 	<td class="s5">A3</td>
 	<td class="s6">彩色</td>

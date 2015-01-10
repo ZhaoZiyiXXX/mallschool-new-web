@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.19, created on 2015-01-08 14:37:05
+<?php /* Smarty version Smarty-3.1.19, created on 2015-01-10 20:03:01
          compiled from "templates\upload\index.html" */ ?>
 <?php /*%%SmartyHeaderCode:105115492f250a080c9-57433249%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'd41f393c3d2ae8aa58c39c2c59596106d276ae79' => 
     array (
       0 => 'templates\\upload\\index.html',
-      1 => 1420699023,
+      1 => 1420891371,
       2 => 'file',
     ),
     'c73a908cc33e9641fff8e30c0558466590ee6b50' => 
@@ -419,7 +419,7 @@ a.active{
 </div><!-- /.modal -->
 <script id='t:pricetable' type="text/template">
 <!-- 模板部分 -->
-<<?php ?>%if(data["A4"]["黑白"]) { %<?php ?>>
+<<?php ?>%if(data["A4"]["黑白"] != undefined) { %<?php ?>>
 <tr>
 	<td class="s5">A4</td>
 	<td class="s6">黑白</td>
@@ -427,7 +427,7 @@ a.active{
 	<td class="s6"><<?php ?>%=data["A4"]["黑白"]["双面"]%<?php ?>></td>
 </tr>
 <<?php ?>%}%<?php ?>>
-<<?php ?>%if(data["A4"]["彩色"]) { %<?php ?>>
+<<?php ?>%if(data["A4"]["彩色"] != undefined) { %<?php ?>>
 <tr>
 	<td class="s5">A4</td>
 	<td class="s6">彩色</td>
@@ -435,7 +435,7 @@ a.active{
 	<td class="s6"><<?php ?>%=data["A4"]["彩色"]["双面"]%<?php ?>></td>
 </tr>
 <<?php ?>%}%<?php ?>>
-<<?php ?>%if(data["A3"]["黑白"]) { %<?php ?>>
+<<?php ?>%if(data["A3"]["黑白"] != undefined) { %<?php ?>>
 <tr>
 	<td class="s5">A3</td>
 	<td class="s6">黑白</td>
@@ -443,7 +443,7 @@ a.active{
 	<td class="s6"><<?php ?>%=data["A3"]["黑白"]["双面"]%<?php ?>></td>
 </tr>
 <<?php ?>%}%<?php ?>>
-<<?php ?>%if(data["A3"]["彩色"]) { %<?php ?>>
+<<?php ?>%if(data["A3"]["彩色"] != undefined) { %<?php ?>>
 <tr>
 	<td class="s5">A3</td>
 	<td class="s6">彩色</td>

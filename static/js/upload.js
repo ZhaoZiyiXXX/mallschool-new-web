@@ -1,6 +1,6 @@
 document.write("<script src=\"/static/js/config.js\"></script>");
 var isduplex = "双面";
-var price_array ;
+var price_array  =new Array();
 function initshopinfo(){
 	var shopid = arguments[0] ? arguments[0] : null;
 	if(null == shopid){
@@ -45,10 +45,43 @@ function initshopinfo(){
 		success:function(data){
 			$('#selectshop').modal('hide');
 			if(data.result ==0){
-				var bt=baidu.template;
+				//var bt=baidu.template;
 				price_array = data.data;
 				console.log(price_array);
-				var html=bt('t:pricetable',data);
+				var html = "";
+				if(price_array["A4"] != undefined && price_array["A4"]["黑白"] != undefined){
+					html += '<tr>'+
+						'<td class="s5">A4</td>'+
+						'<td class="s6">黑白</td>'+
+						'<td class="s5">'+price_array["A4"]["黑白"]["单面"]+'</td>'+
+						'<td class="s6">'+price_array["A4"]["黑白"]["双面"]+'</td>'+
+					'</tr>';
+				}
+				if(price_array["A4"] != undefined && price_array["A4"]["彩色"] != undefined) {
+					html += '<tr>'+
+						'<td class="s5">A4</td>'+
+						'<td class="s6">彩色</td>'+
+						'<td class="s5">'+price_array["A4"]["彩色"]["单面"]+'</td>'+
+						'<td class="s6">'+price_array["A4"]["彩色"]["双面"]+'</td>'+
+					'</tr>';
+				}
+				if(price_array["A3"] != undefined && price_array["A3"]["黑白"] != undefined){
+					html += '<tr>'+
+						'<td class="s5">A3</td>'+
+						'<td class="s6">黑白</td>'+
+						'<td class="s5">'+price_array["A3"]["黑白"]["单面"]+'</td>'+
+						'<td class="s6">'+price_array["A3"]["黑白"]["双面"]+'</td>'+
+					'</tr>';
+					}
+				if(price_array["A3"] != undefined && price_array["A3"]["彩色"] != undefined) {
+					html += '<tr>'+
+						'<td class="s5">A3</td>'+
+						'<td class="s6">彩色</td>'+
+						'<td class="s5">'+price_array["A3"]["彩色"]["单面"]+'</td>'+
+						'<td class="s6">'+price_array["A3"]["彩色"]["双面"]+'</td>'+
+					'</tr>';
+				}
+				//var html=bt('t:pricetable',data);
 				$("#prices").html(html);
 				$('#pagesize').html("");
 				$('#pagecolor').html("");
