@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.19, created on 2014-12-27 15:50:13
+<?php /* Smarty version Smarty-3.1.19, created on 2015-01-10 20:37:48
          compiled from "templates\shop\index.html" */ ?>
 <?php /*%%SmartyHeaderCode:1697854951aa0666b27-93846115%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '9f3bd027efa7caad7f7c9e0ad381a0dc4bb79669' => 
     array (
       0 => 'templates\\shop\\index.html',
-      1 => 1419666612,
+      1 => 1420893459,
       2 => 'file',
     ),
     'c73a908cc33e9641fff8e30c0558466590ee6b50' => 
@@ -172,12 +172,9 @@ td{
 			<div class="row">
 				<div class="col-md-8 col-md-offset-2">
 				<div class="input-group">
-			      <input id="q" type="text" class="form-control" placeholder="输入店铺号查询">
+			      <input id="q" type="password" class="form-control" placeholder="输入店铺号查询">
 			      <span class="input-group-btn">
 			        <button class="btn btn-default" type="button" id="submit">搜索</button>
-			      </span>
-			      <span class="input-group-btn">
-			      <button class="btn btn-default" type="button" id="hide" style="margin-left:10px;">隐藏已打印订单</button>
 			      </span>
 			    </div>
 			    </div>
