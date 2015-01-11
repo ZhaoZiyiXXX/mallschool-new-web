@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.19, created on 2015-01-10 20:37:48
+<?php /* Smarty version Smarty-3.1.19, created on 2015-01-11 12:49:20
          compiled from "templates\shop\index.html" */ ?>
 <?php /*%%SmartyHeaderCode:1697854951aa0666b27-93846115%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -13,7 +13,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'c73a908cc33e9641fff8e30c0558466590ee6b50' => 
     array (
       0 => 'templates\\base.html',
-      1 => 1419046098,
+      1 => 1420950471,
       2 => 'file',
     ),
   ),
@@ -44,7 +44,6 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="/static/js/jquery-1.11.1.min.js"></script>
 <script src="/static/js/bootstrap.min.js"></script>

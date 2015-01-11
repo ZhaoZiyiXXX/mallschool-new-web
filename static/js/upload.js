@@ -1,6 +1,7 @@
 document.write("<script src=\"/static/js/config.js\"></script>");
 var isduplex = "双面";
-var price_array  =new Array();
+var price_array  = new Array();
+var g_shopinfo = new Array();
 function initshopinfo(){
 	var shopid = arguments[0] ? arguments[0] : null;
 	if(null == shopid){
@@ -13,15 +14,33 @@ function initshopinfo(){
 			},
 			success:function(data){
 				if(data.result ==0){
+					g_shopinfo = data.data;
 					var temphtml = "";
-					for(var i=0;i<data.data.length;i++){
-						temphtml +="<a onclick=\"changeshop('"+data.data[i].id+"')\">"+data.data[i].displayname+"</a>";
+					for(var key in g_shopinfo){
+						temphtml +='<a class="schoolinfo">'+key + '</a>';			
 					}
 					$('#schoolbox').html(temphtml);
-					$('#schoolshopbox').html();
+					$('#schoolshopbox').html("");
+					$('#selectshopsubmit').click(function(){
+						alert("请先选择店铺");
+						return;
+					});
 					$('#selectshop').modal({
 						  keyboard: false
 						});
+					
+					$(".schoolinfo").click(function(){
+						temphtml = "";
+						for(var key in g_shopinfo[$(this).text()]){
+							temphtml +="<a onclick=\"changeshop('"+g_shopinfo[$(this).text()][key]+"')\">"+key+"</a>";
+						}
+						$('#schoolshopbox').html(temphtml);
+						$(".shopbox a").click(function(){
+							$(".shopbox a").removeClass("active");
+							$(this).addClass("active");
+						});
+					});
+					
 					$(".shopbox a").click(function(){
 						$(".shopbox a").removeClass("active");
 						$(this).addClass("active");
@@ -125,7 +144,7 @@ function initshopinfo(){
 	});
 }
 function changeshop(shopid){
-	$('#selectshopsubmit').click(function(){
+	$('#selectshopsubmit').unbind("click").bind("click",function(){
 		initshopinfo(shopid);
 	});
 }

@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.19, created on 2015-01-10 20:03:01
+<?php /* Smarty version Smarty-3.1.19, created on 2015-01-11 13:35:34
          compiled from "templates\upload\index.html" */ ?>
 <?php /*%%SmartyHeaderCode:105115492f250a080c9-57433249%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,13 +7,13 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'd41f393c3d2ae8aa58c39c2c59596106d276ae79' => 
     array (
       0 => 'templates\\upload\\index.html',
-      1 => 1420891371,
+      1 => 1420954533,
       2 => 'file',
     ),
     'c73a908cc33e9641fff8e30c0558466590ee6b50' => 
     array (
       0 => 'templates\\base.html',
-      1 => 1419046098,
+      1 => 1420950471,
       2 => 'file',
     ),
   ),
@@ -44,7 +44,6 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="/static/js/jquery-1.11.1.min.js"></script>
 <script src="/static/js/bootstrap.min.js"></script>
@@ -406,8 +405,11 @@ a.active{
        		<h4 class="modal-title">选择店铺</h4>
       	</div>
       <div class="modal-body">
+      <p>选择学校</p>
 	      <div id="schoolbox" class="shopbox">
 	      </div>
+		<hr/>
+		<p>选择店铺</p>
 	      <div id="schoolshopbox" class="shopbox">
 	      </div>
       </div>
